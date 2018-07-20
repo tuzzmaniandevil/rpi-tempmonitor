@@ -1,9 +1,19 @@
 {
-  "name": "tempsensor",
-  "version": "0.0.0",
+  "name": "rpi-tempmonitor",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/tuzzmaniandevil/rpi-tempmonitor/issues",
+    "email": "wesley@tuzza.co"
+  },
+  "author": {
+    "name": "Wesley Tuzza",
+    "email": "wesley@tuzza.co",
+    "url": "https://github.com/tuzzmaniandevil/"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
