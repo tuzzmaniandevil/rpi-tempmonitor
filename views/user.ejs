@@ -1,0 +1,87 @@
+<%- include('header'); -%>
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"><%- user.firstName + ' ' + user.lastName %></h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Details</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="userDetailsForm" class="form-horizontal" action="<%- user.id %>" method="post">
+                        <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
+
+                        <input type="hidden" name="updateDetails" value="true"/>
+                        <div class="form-group">
+                            <label for="add_username" class="col-sm-3 control-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="add_username" placeholder="Username" disabled value="<%- user.username %>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_firstName" class="col-sm-3 control-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="firstName" class="form-control" id="add_firstName" placeholder="First Name" required value="<%- user.firstName %>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_lastName" class="col-sm-3 control-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="lastName" class="form-control" id="add_lastName" placeholder="Last Name" value="<%- user.lastName %>"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-3">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Password</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="userPasswordForm" class="form-horizontal" action="<%- user.id %>" method="post">
+                        <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
+
+                        <input type="hidden" name="updatePassword" value="true"/>
+                        <div class="form-group">
+                            <label for="add_password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" name="password" class="form-control" id="add_password" placeholder="Password" required value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_password_conf" class="col-sm-3 control-label">Repeat Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" name="password_conf" class="form-control" id="add_password_conf" placeholder="Repeat Password" required value=""/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-3">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<% extraJs.push('/js/user.js') %>
+<%- include('footer'); -%>
