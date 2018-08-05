@@ -7,8 +7,9 @@
 var db = require('./db');
 
 var appFunc = require('../app');
-var debug = require('debug')('tempsensor:server');
 var http = require('http');
+var tempSensors = require('./tempMonitor');
+var TemperatureLog = require('../schemas/temperature');
 
 var server, app;
 
@@ -119,3 +120,29 @@ function onListening() {
     : 'port ' + addr.port;
   console.log('Listening on ' + bind);
 }
+
+/**
+ * Temp Sensor
+ */
+
+var temSensor = new tempSensors();
+
+temSensor.on('change', (id, temp) => {
+  // Log temperature into DB
+  TemperatureLog.create({
+    temperature: temp,
+    deviceId: id
+  }, (err, tempLog) => {
+    if (err) {
+      console.error('Error storing TemperatureLog', err);
+    } else {
+      // process temperature to see if we need to send any alerts
+      
+    }
+  });
+});
+
+temSensor.start().catch(err => {
+  console.error('Error starting temperature sensor', err);
+  process.exit(1)
+});

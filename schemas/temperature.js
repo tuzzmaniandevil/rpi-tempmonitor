@@ -4,6 +4,11 @@ const TemperatureLogSchema = new mongoose.Schema({
     temperature: {
         type: Number,
         required: true
+    },
+    deviceId: {
+        type: String,
+        required: true,
+        trim: true
     }
 }, {
         timestamps: true

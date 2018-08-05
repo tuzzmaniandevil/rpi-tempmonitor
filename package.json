@@ -15,6 +15,10 @@
     "email": "wesley@tuzza.co",
     "url": "https://github.com/tuzzmaniandevil/"
   },
+  "devDependencies": {
+    "gpio-mock": "1.2.0",
+    "ds18b20-gpio-mock": "1.0.0"
+  },
   "dependencies": {
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
@@ -27,6 +31,8 @@
     "express-session": "~1.15.6",
     "mongoose": "~5.2.4",
     "connect-mongo": "~2.0.1",
-    "bcrypt": "~3.0.0"
+    "bcrypt": "~3.0.0",
+    "gpio": "0.2.7",
+    "w1temp": "~4.2.1"
   }
 }

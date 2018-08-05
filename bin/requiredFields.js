@@ -1,6 +1,10 @@
 function checkRequired(req, res, fields) {
     var missingFields = [];
 
+    if(fields === null || typeof fields === 'undefined'){
+        return true;
+    }
+
     for (let i = 0; i < fields.length; i++) {
         const field = fields[i];
 
