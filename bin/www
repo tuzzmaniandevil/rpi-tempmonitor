@@ -1,6 +1,16 @@
 #!/usr/bin/env node
 
 /**
+ * Config
+ */
+const mongoHost = process.env.MONGO_DB_HOST || 'localhost';
+const mongoPort = normalizePort(process.env.MONGO_DB_PORT || 27017);
+const mongoDbName = process.env.MONGO_DB_NAME || 'tempmonitor';
+const mongoDbAuthDB = process.env.MONGO_DB_AUTHDB || 'admin';
+const mongoDbUsername = process.env.MONGO_DB_USERNAME || 'root';
+const mongoDbPassword = process.env.MONGO_DB_PASSWORD || 'example';
+
+/**
  * Module dependencies.
  */
 
@@ -18,12 +28,12 @@ var server, app;
  */
 
 db.connect({
-  host: 'localhost',
-  port: 27017,
-  dbName: 'tempmonitor',
-  username: 'root',
-  password: 'example',
-  authdb: 'admin'
+  host: mongoHost,
+  port: mongoPort,
+  dbName: mongoDbName,
+  username: mongoDbUsername,
+  password: mongoDbPassword,
+  authdb: mongoDbAuthDB
 }, function (err) {
   if (err) {
     // Eeek!!! Run!
@@ -137,7 +147,7 @@ temSensor.on('change', (id, temp) => {
       console.error('Error storing TemperatureLog', err);
     } else {
       // process temperature to see if we need to send any alerts
-      
+
     }
   });
 });
