@@ -39,7 +39,7 @@ db.connect({
     // Eeek!!! Run!
     conesole.log('Unable to connect to Mongo.', err);
     console.error('Unable to connect to Mongo.', err)
-    process.exit(1)
+    process.exit(126)
   } else {
     // Start our server!
     var connection = db.get();
@@ -109,11 +109,11 @@ function onError(error) {
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
-      process.exit(1);
+      process.exit(126);
       break;
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
-      process.exit(1);
+      process.exit(126);
       break;
     default:
       throw error;
@@ -155,5 +155,5 @@ temSensor.on('change', (id, temp) => {
 
 temSensor.start().catch(err => {
   console.error('Error starting temperature sensor', err);
-  process.exit(1)
+  process.exit(126)
 });
