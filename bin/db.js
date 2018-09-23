@@ -68,7 +68,10 @@ exports.connect = function (config, done) {
             console.log('Error connecting to DB', err);
             done(err);
         }
-    );
+    ).catch((err) => {
+        console.log('Error connecting to DB', err);
+        done(err);
+    });
 }
 
 exports.get = function () {
