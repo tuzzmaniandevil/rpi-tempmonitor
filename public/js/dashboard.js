@@ -14,6 +14,7 @@
             element: 'temp-history-chart',
             xkey: 'updatedAt',
             ykeys: ['temperature'],
+            labels: ['Temp'],
             resize: true,
             data: []
         });
@@ -30,9 +31,7 @@
             // Decrease Size to max of 1000
             data = data.slice(0, 1000);
 
-            console.log('New Data', data);
-
-            //historyArea.setData(data);
+            historyArea.setData(data);
         });
     }
 
