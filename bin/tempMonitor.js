@@ -75,9 +75,9 @@ tempSensors.prototype.start = function () {
                     }).catch(err => {
                         reject(err);
                     });
-
-                    resolve();
                 }
+
+                resolve(ids);
             }).catch(err => {
                 reject(err);
             });

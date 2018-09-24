@@ -154,7 +154,8 @@ temSensor.on('change', (id, temp) => {
       console.error('Error storing TemperatureLog', err);
     } else {
       // process temperature to see if we need to send any alerts
-      console.log('Emiting temp')
+
+      // Emit change to websockets
       io.sockets.emit('temperature', {
         id: id,
         temperature: temp
@@ -163,7 +164,16 @@ temSensor.on('change', (id, temp) => {
   });
 });
 
-temSensor.start().catch(err => {
-  console.error('Error starting temperature sensor', err);
-  process.exit(1)
-});
+temSensor
+  .start()
+  .then((ids) => {
+    console.log('Sensor IDS', ids);
+
+    app.locals({
+      sensors: ids
+    });
+  })
+  .catch(err => {
+    console.error('Error starting temperature sensor', err);
+    process.exit(1)
+  });

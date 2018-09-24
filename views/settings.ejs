@@ -6,24 +6,27 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    
+
     <div class="row">
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-thermometer-half" aria-hidden="true"></i> Temperature Setpoints</h3>
+                    <h3 class="panel-title"><i class="fa fa-thermometer-half" aria-hidden="true"></i> Temperature
+                        Setpoints</h3>
                 </div>
                 <div class="panel-body">
                     <form id="alarmForm" class="form-horizontal" action="<%- current_url %>" method="post">
                         <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
-                        <input type="hidden" name="updateAlarm" value="true"/>
+                        <input type="hidden" name="updateAlarm" value="true" />
 
                         <div class="form-group">
                             <label for="highTempAlarmEnabled" class="col-sm-3 control-label">Enable High Alarm</label>
                             <div class="col-sm-9">
                                 <select name="highTempAlarmEnabled" class="form-control">
-                                    <option value="true" <% if(settings.highTempAlarmEnabled){ %>selected<% }%>>Enabled</option>
-                                    <option value="false" <% if(!settings.highTempAlarmEnabled){ %>selected<% }%>>Disabled</option>
+                                    <option value="true" <% if(settings.highTempAlarmEnabled){ %>selected
+                                        <% }%>>Enabled</option>
+                                    <option value="false" <% if(!settings.highTempAlarmEnabled){ %>selected
+                                        <% }%>>Disabled</option>
                                 </select>
                             </div>
                         </div>
@@ -31,7 +34,10 @@
                         <div class="form-group">
                             <label for="highTempAlarm" class="col-sm-3 control-label">High Alarm</label>
                             <div class="col-sm-9">
-                                <input <% if(!settings.highTempAlarmEnabled){ %> disabled <% } %> class="form-control" min="0" type="number" id="highTempAlarm" name="highTempAlarm" value="<%- settings.highTempAlarm %>" />
+                                <input <% if(!settings.highTempAlarmEnabled){ %> disabled
+                                <% } %> class="form-control" min="0" type="number" id="highTempAlarm"
+                                name="highTempAlarm" value="
+                                <%- settings.highTempAlarm %>" />
                             </div>
                         </div>
 
@@ -39,8 +45,10 @@
                             <label for="lowTempAlarmEnabled" class="col-sm-3 control-label">Enable Low Alarm</label>
                             <div class="col-sm-9">
                                 <select name="lowTempAlarmEnabled" class="form-control">
-                                    <option value="true" <% if(settings.lowTempAlarmEnabled){ %>selected<% }%>>Enabled</option>
-                                    <option value="false" <% if(!settings.lowTempAlarmEnabled){ %>selected<% }%>>Disabled</option>
+                                    <option value="true" <% if(settings.lowTempAlarmEnabled){ %>selected
+                                        <% }%>>Enabled</option>
+                                    <option value="false" <% if(!settings.lowTempAlarmEnabled){ %>selected
+                                        <% }%>>Disabled</option>
                                 </select>
                             </div>
                         </div>
@@ -48,7 +56,10 @@
                         <div class="form-group">
                             <label for="lowTempAlarm" class="col-sm-3 control-label">Low Alarm</label>
                             <div class="col-sm-9">
-                                <input <% if(!settings.lowTempAlarmEnabled){ %> disabled <% } %> class="form-control" min="0" type="number" id="lowTempAlarm" name="lowTempAlarm" value="<%- settings.lowTempAlarm %>" />
+                                <input <% if(!settings.lowTempAlarmEnabled){ %> disabled
+                                <% } %> class="form-control" min="0" type="number" id="lowTempAlarm"
+                                name="lowTempAlarm" value="
+                                <%- settings.lowTempAlarm %>" />
                             </div>
                         </div>
 
@@ -72,17 +83,19 @@
                     <form id="clicksendForm" class="form-horizontal" action="<%- current_url %>" method="post">
                         <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
 
-                        <input type="hidden" name="updateClicksend" value="true"/>
+                        <input type="hidden" name="updateClicksend" value="true" />
                         <div class="form-group">
                             <label for="clicksendUsername" class="col-sm-3 control-label">Username</label>
                             <div class="col-sm-9">
-                                <input type="text" name="clicksendUsername" class="form-control" id="clicksendUsername" placeholder="Clicksend Username" value="<%- settings.clicksendUsername %>"/>
+                                <input type="text" name="clicksendUsername" class="form-control" id="clicksendUsername"
+                                    placeholder="Clicksend Username" value="<%- settings.clicksendUsername %>" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="clicksendKey" class="col-sm-3 control-label">Key</label>
                             <div class="col-sm-9">
-                            <input type="text" name="clicksendKey" class="form-control" id="clicksendKey" placeholder="Clicksend Key" value="<%- settings.clicksendKey %>"/>
+                                <input type="text" name="clicksendKey" class="form-control" id="clicksendKey"
+                                    placeholder="Clicksend Key" value="<%- settings.clicksendKey %>" />
                             </div>
                         </div>
 
@@ -96,6 +109,8 @@
             </div>
         </div>
 
+    </div>
+    <div class="row">
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -105,17 +120,19 @@
                     <form id="templateForm" class="form-horizontal" action="<%- current_url %>" method="post">
                         <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
 
-                        <input type="hidden" name="updateTemplate" value="true"/>
+                        <input type="hidden" name="updateTemplate" value="true" />
                         <div class="form-group">
                             <label for="smsTemplate" class="col-sm-3 control-label">SMS Template</label>
                             <div class="col-sm-9">
-                                <input type="text" name="smsTemplate" class="form-control" id="smsTemplate" placeholder="SMS Template" value="<%- settings.smsTemplate %>"/>
+                                <input type="text" name="smsTemplate" class="form-control" id="smsTemplate" placeholder="SMS Template"
+                                    value="<%- settings.smsTemplate %>" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="voiceTemplate" class="col-sm-3 control-label">Voice Template</label>
                             <div class="col-sm-9">
-                            <input type="text" name="voiceTemplate" class="form-control" id="voiceTemplate" placeholder="Voice Template" value="<%- settings.voiceTemplate %>"/>
+                                <input type="text" name="voiceTemplate" class="form-control" id="voiceTemplate"
+                                    placeholder="Voice Template" value="<%- settings.voiceTemplate %>" />
                             </div>
                         </div>
 
@@ -137,7 +154,8 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#addContactModal"><i class="fa fa-plus"></i> Add Contact</button>
+                            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#addContactModal"><i
+                                    class="fa fa-plus"></i> Add Contact</button>
                         </div>
                     </div>
                     <table class="table table-hover">
@@ -157,9 +175,38 @@
         </div>
 
     </div>
+
+    <div class="row">
+
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-wrench" aria-hidden="true"></i> Sensors</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Enabled</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><%- settings.sensors %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
-<div class="modal fade" id="addContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel" aria-hidden="true">
+<div class="modal fade" id="addContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form role="form" action="/users/add" method="post" class="form-horizontal">

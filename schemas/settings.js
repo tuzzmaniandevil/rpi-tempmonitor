@@ -32,7 +32,12 @@ const SettingsSchema = new mongoose.Schema({
     voiceTemplate: {
         type: String,
         trim: true
-    }
+    },
+    sensors: [{
+        id: String,
+        name: String,
+        enabled, Boolean
+    }]
 });
 
 SettingsSchema.statics.getOrCreateSettings = function (cb) {
