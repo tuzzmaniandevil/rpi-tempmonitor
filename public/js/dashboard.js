@@ -21,7 +21,7 @@
         socket.on('temperature_history', function (msg) {
             console.log('temp history', msg);
 
-            data = data.concat(msg.data);
+            data = uniq(data.concat(msg.data), '_id');
             data.sort(function (a, b) {
                 return (a.updatedAt < b.updatedAt) ? -1 : (a.updatedAt > b.updatedAt) ? 1 : 0;
             });
@@ -30,6 +30,12 @@
 
             historyArea.setData(data);
         });
+    }
+
+    function uniq(a, param) {
+        return a.filter(function (item, pos, array) {
+            return array.map(function (mapItem) { return mapItem[param]; }).indexOf(item[param]) === pos;
+        })
     }
 
     // Init
