@@ -8,8 +8,17 @@
     }
 
     function initHistoryChart(socket) {
-        socket.on('temperature_history', function (data) {
+        historyArea = Morris.Area({
+            element: 'temp-history-chart',
+            data: []
+        });
+
+        socket.on('temperature_history', function (msg) {
             console.log('temp history', data);
+
+            var newData = [].concat(msg.data);
+
+
         });
 
         // Morris.Area({

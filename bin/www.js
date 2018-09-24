@@ -70,7 +70,6 @@ db.connect({
           // Get latest temp readings for ID
           if (app.locals.sensors && app.locals.sensors.length > 0) {
 
-            var historyData = [];
             app.locals.sensors.forEach(sensorid => {
               // Get Sensor Setting
               var sensorSetting = settings.findSensorSetting(sensorid);
@@ -94,13 +93,11 @@ db.connect({
                   if (err) {
                     console.error('Error getting logs for ' + sensorid, err);
                   } else {
-                    historyData = historyData.concat(logs);
+                    socket.emit('temperature_history', { data: logs });
                   }
                 });
               }
             });
-
-            socket.emit('temperature_history', { data: historyData });
           } else {
             socket.emit('temperature_history', { data: [] });
           }
@@ -158,6 +155,12 @@ db.connect({
                   id: id,
                   name: sensorSetting.name || id,
                   temperature: temp
+                });
+
+                io.socketssocket.emit('temperature_history', {
+                  data: [
+                    tempLog
+                  ]
                 });
               }
             });
