@@ -9,7 +9,7 @@
 
     function initHistoryChart(socket) {
         socket.on('temperature_history', function (data) {
-
+            console.log('temp history', data);
         });
 
         // Morris.Area({
