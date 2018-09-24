@@ -176,6 +176,8 @@
         errorDivTemplate: '<div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>',
         onSuccess: function (resp) { },
         onFail: function (resp) {
+            var $this = this;
+
             $this.$errorDiv.text(resp.message || 'An unknown error occurred');
             $this.$errorDiv.show();
 

@@ -1,8 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var auths = require('../bin/authenticated');
-var Contact = require('../schemas/contact');
-var checkRequired = require('../bin/requiredFields');
+const express = require('express');
+const router = express.Router();
+const auths = require('../bin/authenticated');
+const Contact = require('../schemas/contact');
+const checkRequired = require('../bin/requiredFields');
+const validatePhone = require('../bin/validatePhoneNum');
 
 /* GET Contacts */
 router.get('/', auths('ADMIN'), function (req, res, next) {
@@ -10,7 +11,7 @@ router.get('/', auths('ADMIN'), function (req, res, next) {
         if (err) {
             next(err);
         } else {
-            res.render('contacts', { title: 'Contacts', contacts: contacts });
+            res.render('contacts', { title: 'Contacts', contacts: contacts, supportedCountries: validatePhone.supportedCountries() });
         }
     });
 });

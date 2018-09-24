@@ -15,7 +15,7 @@ const ContactSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
-        required: true,
+        required: false,
         trim: true
     },
     mobile: {
