@@ -16,6 +16,7 @@
             ykeys: ['temperature'],
             labels: ['Temp'],
             resize: true,
+            pointSize: 2,
             data: []
         });
 
@@ -28,8 +29,8 @@
                 return result * -1;
             });
 
-            // Decrease Size to max of 1000
-            data = data.slice(0, 1000);
+            // Decrease Size to max of 500
+            data = data.slice(0, 500);
 
             historyArea.setData(data);
         });
