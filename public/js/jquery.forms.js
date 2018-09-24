@@ -25,7 +25,7 @@
         $this.$errorDiv.hide();
         $this.$errorDiv.empty();
 
-        $this.find('.has-error').removeClass('has-error');
+        $this.$elem.find('.has-error').removeClass('has-error');
     };
 
     Forms.prototype.enable = function () {
