@@ -10,7 +10,7 @@ router.get('/', auths('ADMIN'), function (req, res, next) {
         if (err) {
             next(err);
         } else {
-            res.render('settings', { title: 'Settings', settings: settings });
+            res.render('settings', { title: 'Settings', settings: settings, sensors: req.app.locals.sensors });
         }
     });
 });

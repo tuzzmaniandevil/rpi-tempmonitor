@@ -108,6 +108,7 @@ db.connect({
 
         console.log('Locals', app.locals);
         app.locals.sensors = ids;
+        console.log('Locals', app.locals);
 
         // app.locals({
         //   sensors: ids
