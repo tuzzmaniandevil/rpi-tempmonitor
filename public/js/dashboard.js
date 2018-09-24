@@ -23,7 +23,8 @@
 
             data = uniq(data.concat(msg.data), '_id');
             data.sort(function (a, b) {
-                return (a.updatedAt < b.updatedAt) ? -1 : (a.updatedAt > b.updatedAt) ? 1 : 0;
+                var result = (a.updatedAt < b.updatedAt) ? -1 : (a.updatedAt > b.updatedAt) ? 1 : 0;
+                return result * -1;
             });
 
             // Decrease Size to max of 1000
