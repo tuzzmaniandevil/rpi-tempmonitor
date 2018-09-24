@@ -5,8 +5,8 @@ var Settings = require('../schemas/settings');
 var createError = require('http-errors');
 
 /* GET settings */
-router.get('/', auths('ADMIN'), function (req, res, next) {
-    Settings.getOrCreateSettings(function (err, settings) {
+router.get('/', auths('ADMIN'), (req, req, next) => {
+    Settings.getOrCreateSettings((err, settings) => {
         if (err) {
             next(err);
         } else {
@@ -23,7 +23,7 @@ router.get('/', auths('ADMIN'), function (req, res, next) {
                     };
 
                     configuredSensors.forEach(configSensor => {
-                        if (configSensor == sensorId) {
+                        if (configSensor.id == sensorId) {
                             sensor.name = configSensor.id
                             sensor.enabled = configSensor.enabled
                         }
@@ -38,6 +38,61 @@ router.get('/', auths('ADMIN'), function (req, res, next) {
             }
 
             res.render('settings', { title: 'Settings', settings: settings, sensors: sensors });
+        }
+    });
+});
+
+/* POST sensor settings */
+router.post('/sensors', auths('ADMIN'), (req, req, next) => {
+    Settings.getOrCreateSettings((err, settings) => {
+        if (err) {
+            next(err);
+        } else {
+            if (checkRequired(req, res, ['sensorid', 'name', 'enabled'])) {
+                var sensorid = req.body.sensorid;
+                var name = req.body.name;
+                var enabled = req.body.enabled.toLowerCase() == 'true';
+
+                var sensors = settings.sensors || [];
+                var found = false;
+
+                sensors.forEach(sensor => {
+                    if (sensor.id == sensorid) {
+                        found = true;
+
+                        sensor.name = name;
+                        sensor.enabled = enabled;
+
+                        return;
+                    }
+                });
+
+                if (!found) {
+                    var sensor = {
+                        id: sensorid,
+                        name: name,
+                        enabled: enabled
+                    };
+
+                    sensors.push(sensor);
+                }
+
+                settings.sensors = sensors;
+
+                settings.save((err, updatedSettings) => {
+                    if (err) {
+                        res.json({
+                            status: false,
+                            message: err.message
+                        });
+                    } else {
+                        res.json({
+                            status: true,
+                            message: 'Successfully updated sensor'
+                        });
+                    }
+                });
+            }
         }
     });
 });
