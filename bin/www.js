@@ -132,7 +132,7 @@ db.connect({
                 console.error('Error storing TemperatureLog', err);
               } else {
                 // Send to notification handler
-                notificationHandler.handle(log)
+                notificationHandler.handle(tempLog)
                   .catch(err => {
                     console.error('Error processing notification', err);
                   });
