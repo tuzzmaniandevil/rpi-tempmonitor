@@ -11,8 +11,8 @@ router.get('/', auths('ADMIN'), (req, res, next) => {
         if (err) {
             next(err);
         } else {
+            // Get Sensors
             var sensors = [];
-
             if (req.app.locals.sensors && req.app.locals.sensors.length > 0) {
                 var configuredSensors = settings.sensors || [];
 
@@ -38,7 +38,13 @@ router.get('/', auths('ADMIN'), (req, res, next) => {
                 })
             }
 
-            res.render('settings', { title: 'Settings', settings: settings, sensors: sensors });
+            Contact.find({}, (err, contacts) => {
+                if (err) {
+                    next(err);
+                } else {
+                    res.render('settings', { title: 'Settings', settings: settings, sensors: sensors, contacts: contacts });
+                }
+            });
         }
     });
 });

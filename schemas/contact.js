@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const util = require('util');
 
 const ContactSchema = new mongoose.Schema({
     firstName: {
@@ -32,6 +33,16 @@ const ContactSchema = new mongoose.Schema({
 }, {
         timestamps: true
     });
+
+ContactSchema.methods.formattedName = function () {
+    var _self = this;
+
+    if (_self.firstName && _self.firstName.trim()) {
+        return util.format('%s %s', _self.firstName, _self.lastName).trim();
+    } else {
+        return _self._id;
+    }
+};
 
 const Contact = mongoose.model('Contact', ContactSchema);
 
