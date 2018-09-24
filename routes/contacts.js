@@ -28,7 +28,7 @@ router.post('/add', auths('ADMIN'), function (req, res, next) {
         if (!(mobile && mobile.trim().length > 0) && !(landline && landline.trim().length > 0)) {
             res.json({
                 status: false,
-                message: 'Please specify the mobile and/or landline number',
+                message: 'Please specify a mobile and/or landline number',
                 fields: ['mobile', 'landline']
             });
         } else {
