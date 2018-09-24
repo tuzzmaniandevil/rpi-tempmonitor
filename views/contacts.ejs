@@ -98,11 +98,13 @@
                         <label for="add_mobile" class="col-sm-3 control-label">Mobile</label>
                         <div class="col-sm-9">
                             <div class="input-group">
-                                <select name="mobile-region" class="form-control">
-                                    <% supportedCountries.forEach(function(cc){ %>
-                                    <option value="<%- cc.regionCode %>"><%- cc.regionCode %> - <%= cc.countryCode %></option>
-                                    <% }); %>
-                                </select>
+                                <span class="input-group-btn">
+                                    <select name="mobile-region" class="form-control btn btn-default">
+                                        <% supportedCountries.forEach(function(cc){ %>
+                                        <option value="<%- cc.regionCode %>"><%= cc.regionCode %> (+<%= cc.countryCode %>)</option>
+                                        <% }); %>
+                                    </select>
+                                </span>
                                 <input type="tel" name="mobile" class="form-control" id="add_mobile" placeholder="Mobile" />
                             </div>
                         </div>
