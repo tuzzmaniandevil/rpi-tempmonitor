@@ -102,8 +102,8 @@
                                     <select name="mobile-region" class="btn btn-default">
                                         <% supportedCountries.forEach(function(cc){ %>
                                         <option value="<%- cc.regionCode %>">
-                                            <%= cc.regionCode %> (+
-                                            <%= cc.countryCode %>)</option>
+                                            <%= cc.regionCode %> (+<%_ cc.countryCode _%>)
+                                        </option>
                                         <% }); %>
                                     </select>
                                 </span>
@@ -120,8 +120,8 @@
                                     <select name="mobile-region" class="btn btn-default">
                                         <% supportedCountries.forEach(function(cc){ %>
                                         <option value="<%- cc.regionCode %>">
-                                            <%= cc.regionCode %> (+
-                                            <%= cc.countryCode %>)</option>
+                                            <%= cc.regionCode %> (+<%_ cc.countryCode _%>)
+                                        </option>
                                         <% }); %>
                                     </select>
                                 </span>
