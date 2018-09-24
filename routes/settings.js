@@ -17,7 +17,7 @@ router.get('/', auths('ADMIN'), function (req, res, next) {
 
                 req.app.locals.sensors.forEach(sensorId => {
                     var sensor = {
-                        id: id,
+                        id: sensorId,
                         name: null,
                         enabled: false
                     };
