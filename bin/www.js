@@ -157,7 +157,7 @@ db.connect({
                   temperature: temp
                 });
 
-                io.socketssocket.emit('temperature_history', {
+                io.sockets.emit('temperature_history', {
                   data: [
                     tempLog
                   ]
