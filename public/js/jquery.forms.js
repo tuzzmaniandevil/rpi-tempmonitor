@@ -160,6 +160,7 @@
             if (!data) {
                 $this.data('__forms', (data = new Forms(this, options)));
                 data = $this.data('__forms');
+                data._INTERNAL.init.call(data);
             }
 
             if (typeof options === 'string' && typeof data[options] === 'function') {
