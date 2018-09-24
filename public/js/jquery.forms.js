@@ -146,25 +146,6 @@
         }
     };
 
-    $.fn.forms.defaults = {
-        errorDivTemplate: '<div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>',
-        onSuccess: function (resp) { },
-        onFail: function (resp) {
-            $this.$errorDiv.text(resp.message || 'An unknown error occurred');
-            $this.$errorDiv.show();
-
-            if (resp.fields) {
-                for (var i = 0; i < resp.fields.length; i++) {
-                    var field = resp.fields[i];
-
-                    $this.$elem.find('input[name=' + field + ']').closest('.form-group').addClass('has-error');
-                }
-            }
-        },
-        onError: function (jqXHR, textStatus, errorThrown) { },
-        onProgress: function (percentComplete) { }
-    };
-
     $.fn.forms = function (options) {
         if (typeof options === 'string' && this.data('__forms')) {
             var data = this.data('__forms');
@@ -188,6 +169,25 @@
 
             return $this;
         });
+    };
+
+    $.fn.forms.defaults = {
+        errorDivTemplate: '<div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>',
+        onSuccess: function (resp) { },
+        onFail: function (resp) {
+            $this.$errorDiv.text(resp.message || 'An unknown error occurred');
+            $this.$errorDiv.show();
+
+            if (resp.fields) {
+                for (var i = 0; i < resp.fields.length; i++) {
+                    var field = resp.fields[i];
+
+                    $this.$elem.find('input[name=' + field + ']').closest('.form-group').addClass('has-error');
+                }
+            }
+        },
+        onError: function (jqXHR, textStatus, errorThrown) { },
+        onProgress: function (percentComplete) { }
     };
 }(jQuery));
 
