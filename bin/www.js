@@ -154,7 +154,8 @@ temSensor.on('change', (id, temp) => {
       console.error('Error storing TemperatureLog', err);
     } else {
       // process temperature to see if we need to send any alerts
-      io.of('temperature').emit({
+      console.log('Emiting temp')
+      io.sockets.emit('temperature', {
         id: id,
         temperature: temp
       });
