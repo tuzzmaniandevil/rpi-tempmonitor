@@ -94,12 +94,17 @@
                         </div>
                     </div> -->
 
-                    <%- supportedCountries %>
-
                     <div class="form-group">
                         <label for="add_mobile" class="col-sm-3 control-label">Mobile</label>
                         <div class="col-sm-9">
-                            <input type="tel" name="mobile" class="form-control" id="add_mobile" placeholder="Mobile" />
+                            <div class="input-group">
+                                <select name="mobile-region" class="form-control">
+                                    <% supportedCountries.forEach(function(cc){ %>
+                                    <option value="<%- cc.regionCode %>"><%- cc.regionCode %> - <%= cc.countryCode %></option>
+                                    <% }); %>
+                                </select>
+                                <input type="tel" name="mobile" class="form-control" id="add_mobile" placeholder="Mobile" />
+                            </div>
                         </div>
                     </div>
 

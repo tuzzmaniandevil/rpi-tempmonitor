@@ -33,5 +33,23 @@ function checkRequired(req, res, fields) {
     }
 }
 
+function supportedCountries() {
+    var result = [];
+
+    var supportedRegions = phoneUtil.getSupportedRegions();
+    for (let i = 0; i < supportedRegions.length; i++) {
+        const regionCode = supportedRegions[i];
+        const ndd = phoneUtil.getNddPrefixForRegion(regionCode)
+        const countryCode = phoneUtil.getCountryCodeForRegion(regionCode);
+        result.push({
+            regionCode: regionCode,
+            ndd: ndd,
+            countryCode: countryCode
+        });
+    }
+
+    return result;
+}
+
 module.exports.validate = checkRequired;
-module.exports.supportedCountries = phoneUtil.getSupportedRegions;
+module.exports.supportedCountries = supportedCountries;
