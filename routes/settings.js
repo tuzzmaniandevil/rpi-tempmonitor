@@ -5,7 +5,7 @@ var Settings = require('../schemas/settings');
 var createError = require('http-errors');
 
 /* GET settings */
-router.get('/', auths('ADMIN'), (req, req, next) => {
+router.get('/', auths('ADMIN'), (req, res, next) => {
     Settings.getOrCreateSettings((err, settings) => {
         if (err) {
             next(err);
@@ -43,7 +43,7 @@ router.get('/', auths('ADMIN'), (req, req, next) => {
 });
 
 /* POST sensor settings */
-router.post('/sensors', auths('ADMIN'), (req, req, next) => {
+router.post('/sensors', auths('ADMIN'), (req, res, next) => {
     Settings.getOrCreateSettings((err, settings) => {
         if (err) {
             next(err);
