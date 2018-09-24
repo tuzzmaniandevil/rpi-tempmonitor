@@ -139,6 +139,8 @@ function onListening() {
 var temSensor = new tempSensors();
 
 temSensor.on('change', (id, temp) => {
+  console.log('Temp change', id, temp);
+
   // Log temperature into DB
   TemperatureLog.create({
     temperature: temp,
@@ -148,7 +150,6 @@ temSensor.on('change', (id, temp) => {
       console.error('Error storing TemperatureLog', err);
     } else {
       // process temperature to see if we need to send any alerts
-
     }
   });
 });
