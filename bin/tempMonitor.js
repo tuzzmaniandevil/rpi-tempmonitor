@@ -70,7 +70,6 @@ tempSensors.prototype.start = function () {
 
                     W1Temp.getSensor(id).then((sensor) => {
                         sensor.on('change', (temp) => {
-                            console.log('Change', id, temp);
                             self.emit('change', id, temp);
                         });
                     }).catch(err => {

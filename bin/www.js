@@ -21,7 +21,7 @@ var http = require('http');
 var tempSensors = require('./tempMonitor');
 var TemperatureLog = require('../schemas/temperature');
 
-var server, app;
+var server, app, io;
 
 /**
  * First connect to DB then start web-server if DB connection was successful
@@ -37,9 +37,8 @@ db.connect({
 }, function (err) {
   if (err) {
     // Eeek!!! Run!
-    conesole.log('Unable to connect to Mongo.', err);
     console.error('Unable to connect to Mongo.', err)
-    process.exit(126)
+    process.exit(1);
   } else {
     // Start our server!
     var connection = db.get();
@@ -55,6 +54,11 @@ db.connect({
      * Create HTTP server.
      */
     server = http.createServer(app);
+
+    /**
+     * Create Websocket server.
+     */
+    io = require('socket.io')(server);
 
     /**
      * Listen on provided port, on all network interfaces.
@@ -109,11 +113,11 @@ function onError(error) {
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
-      process.exit(126);
+      process.exit(1);
       break;
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
-      process.exit(126);
+      process.exit(1);
       break;
     default:
       throw error;
@@ -156,5 +160,5 @@ temSensor.on('change', (id, temp) => {
 
 temSensor.start().catch(err => {
   console.error('Error starting temperature sensor', err);
-  process.exit(126)
+  process.exit(1)
 });
