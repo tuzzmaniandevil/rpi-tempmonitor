@@ -6,6 +6,17 @@
         var form = modal.find('form');
         var errorDiv = modal.find('.err-msg');
 
+        // On modal close
+        modal.on('hidden.bs.modal', function () {
+            form.trigger('reset');
+
+            // Reset Errors
+            errorDiv.hide();
+            errorDiv.empty();
+
+            form.find('.has-error').removeClass('has-error');
+        });
+
         form.on('submit', function (e) {
             e.preventDefault();
             e.stopPropagation();

@@ -18,11 +18,42 @@ router.get('/', auths('ADMIN'), function (req, res, next) {
 /**
  * Create a new Contact
  */
+router.post('/add', auths('ADMIN'), function (req, res, next) {
+    if (checkRequired(req, res, ['firstName'])) {
+        var firstName = req.body.firstName;
+        var lastName = req.body.lastName;
+        var mobile = req.body.mobile;
+        var landline = req.body.landline;
 
-router.post('/', auths('ADMIN'), function (req, res, next) {
-    if(checkRequired(req, res, [''])){
-
+        if (!(mobile && mobile.trim().length > 0) && !(landline && landline.trim().length > 0)) {
+            res.json({
+                status: false,
+                message: 'Please specify the mobile and/or landline number',
+                fields: ['mobile', 'landline']
+            });
+        } else {
+            Contact.create({
+                firstName: firstName,
+                lastName: lastName,
+                mobile: mobile,
+                landline: landline
+            }, (err, newContact) => {
+                if (err) {
+                    res.json({
+                        status: false,
+                        message: err.message
+                    });
+                } else {
+                    res.json({
+                        status: true,
+                        message: 'Successfully added contact'
+                    });
+                }
+            });
+        }
     }
 });
+
+
 
 module.exports = router;
