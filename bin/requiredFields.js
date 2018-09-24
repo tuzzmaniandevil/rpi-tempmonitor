@@ -28,4 +28,4 @@ function checkRequired(req, res, fields) {
     }
 }
 
-module.exports = checkRequired();
+module.exports = checkRequired;

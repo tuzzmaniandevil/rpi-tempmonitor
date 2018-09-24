@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var auths = require('../bin/authenticated');
 var Settings = require('../schemas/settings');
+var checkRequired = require('../bin/requiredFields');
 var createError = require('http-errors');
 
 /* GET settings */
@@ -24,7 +25,7 @@ router.get('/', auths('ADMIN'), (req, res, next) => {
 
                     configuredSensors.forEach(configSensor => {
                         if (configSensor.id == sensorId) {
-                            sensor.name = configSensor.id
+                            sensor.name = configSensor.name
                             sensor.enabled = configSensor.enabled
                         }
                     });
