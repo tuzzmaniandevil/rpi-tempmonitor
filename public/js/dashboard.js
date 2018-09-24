@@ -8,28 +8,28 @@
     }
 
     function initHistoryChart(socket) {
+        var data = [];
+
         historyArea = Morris.Area({
             element: 'temp-history-chart',
+            xkey: 'updatedAt',
+            ykeys: ['temperature'],
+            resize: true,
             data: []
         });
 
         socket.on('temperature_history', function (msg) {
-            console.log('temp history', data);
+            console.log('temp history', msg);
 
-            var newData = [].concat(msg.data);
+            data = data.concat(msg.data);
+            data.sort(function (a, b) {
+                return (a.updatedAt < b.updatedAt) ? -1 : (a.updatedAt > b.updatedAt) ? 1 : 0;
+            });
 
+            console.log('New Data', data);
 
+            historyArea.setData(data);
         });
-
-        // Morris.Area({
-        //     element: 'temp-history-chart',
-        //     xkey: 'timestamp',
-        //     ykeys: ['iphone', 'ipad', 'itouch'],
-        //     labels: ['iPhone', 'iPad', 'iPod Touch'],
-        //     pointSize: 2,
-        //     hideHover: 'auto',
-        //     resize: true
-        // });
     }
 
     // Init
