@@ -73,6 +73,50 @@ db.connect({
     });
 
     server.listen(port);
+
+    /**
+     * Temp Sensor
+     */
+    var temSensor = new tempSensors();
+
+    temSensor.on('change', (id, temp) => {
+      console.log('Temp change', id, temp);
+
+      // Log temperature into DB
+      TemperatureLog.create({
+        temperature: temp,
+        deviceId: id
+      }, (err, tempLog) => {
+        if (err) {
+          console.error('Error storing TemperatureLog', err);
+        } else {
+          // process temperature to see if we need to send any alerts
+
+          // Emit change to websockets
+          io.sockets.emit('temperature', {
+            id: id,
+            temperature: temp
+          });
+        }
+      });
+    });
+
+    temSensor
+      .start()
+      .then((ids) => {
+        console.log('Sensor IDS', ids);
+
+        console.log('Locals', app.locals);
+        app.locals.sensors = ids;
+
+        // app.locals({
+        //   sensors: ids
+        // });
+      })
+      .catch(err => {
+        console.error('Error starting temperature sensor', err);
+        process.exit(1)
+      });
   }
 });
 
@@ -123,57 +167,3 @@ function onError(error) {
       throw error;
   }
 }
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  console.log('Listening on ' + bind);
-}
-
-/**
- * Temp Sensor
- */
-
-var temSensor = new tempSensors();
-
-temSensor.on('change', (id, temp) => {
-  console.log('Temp change', id, temp);
-
-  // Log temperature into DB
-  TemperatureLog.create({
-    temperature: temp,
-    deviceId: id
-  }, (err, tempLog) => {
-    if (err) {
-      console.error('Error storing TemperatureLog', err);
-    } else {
-      // process temperature to see if we need to send any alerts
-
-      // Emit change to websockets
-      io.sockets.emit('temperature', {
-        id: id,
-        temperature: temp
-      });
-    }
-  });
-});
-
-temSensor
-  .start()
-  .then((ids) => {
-    console.log('Sensor IDS', ids);
-
-    app.locals({
-      sensors: ids
-    });
-  })
-  .catch(err => {
-    console.error('Error starting temperature sensor', err);
-    process.exit(1)
-  });
