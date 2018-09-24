@@ -193,9 +193,25 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% if(sensors && sensors.length > 0) { %>
+                            <% sensors.forEach(function(sensor){ %>
                             <tr>
-                                <td><%- settings.sensors %></td>
+                                <td>
+                                    <%- sensor.id %>
+                                </td>
+                                <td>
+                                    <%- sensor.name %>
+                                </td>
+                                <td>
+                                    <%- sensor.enabled %>
+                                </td>
                             </tr>
+                            <% }) %>
+                            <% } else { %>
+                            <tr>
+                                <td colspan="3">No connected sensors found.</td>
+                            </tr>
+                            <% } %>
                         </tbody>
                     </table>
                 </div>
