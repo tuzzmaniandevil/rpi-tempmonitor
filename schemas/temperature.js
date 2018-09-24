@@ -15,7 +15,7 @@ const TemperatureLogSchema = new mongoose.Schema({
     });
 
 TemperatureLogSchema.statics.findLatestByDevice = (sensorid, callback) => {
-    TemperatureLogSchema.findOne({ deviceId: sensorid }, {}, { sort: { 'updatedAt': -1 } }, (err, log) => {
+    TemperatureLog.findOne({ deviceId: sensorid }, {}, { sort: { 'updatedAt': -1 } }, (err, log) => {
         return callback(err, log);
     });
 };
