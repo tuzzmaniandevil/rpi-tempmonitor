@@ -9,6 +9,15 @@ body {
 #wrapper {
   width: 100%;
 }
+
+.input-group-btn select {
+	border-color: #ccc;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
 #page-wrapper {
   padding: 0 15px;
   min-height: 568px;
