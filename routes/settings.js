@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var auths = require('../bin/authenticated');
-var Settings = require('../schemas/settings');
-var checkRequired = require('../bin/requiredFields');
-var createError = require('http-errors');
+const express = require('express');
+const router = express.Router();
+const auths = require('../bin/authenticated');
+const Settings = require('../schemas/settings');
+const Contact = require('../schemas/contact');
+const checkRequired = require('../bin/requiredFields');
 
 /* GET settings */
 router.get('/', auths('ADMIN'), (req, res, next) => {
