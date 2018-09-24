@@ -19,7 +19,9 @@ var db = require('./db');
 var appFunc = require('../app');
 var http = require('http');
 var tempSensors = require('./tempMonitor');
+var Settings = require('../schemas/settings');
 var TemperatureLog = require('../schemas/temperature');
+var notificationHandler = require('./notificationHandler');
 
 var server, app, io;
 
@@ -59,6 +61,36 @@ db.connect({
      * Create Websocket server.
      */
     io = require('socket.io')(server);
+    io.on('connection', function (socket) {
+      // Get Settings
+      Settings.getOrCreateSettings((err, settings) => {
+        if (err) {
+          console.error('Error getting settings', err);
+        } else {
+          // Get latest temp readings for ID
+          if (app.locals.sensors && app.locals.sensors.length > 0) {
+            app.locals.sensors.forEach(sensorid => {
+              // Get Sensor Setting
+              var sensorSetting = settings.findSensorSetting(sensorid);
+
+              if (sensorSetting) {
+                TemperatureLog.findLatestByDevice(sensorid, (err, log) => {
+                  if (err) {
+                    console.log('Error getting latest log for ' + sensorid, err);
+                  } else if (log) {
+                    socket.emit('temperature', {
+                      id: sensorid,
+                      name: sensorSetting.name || sensorid,
+                      temperature: log.temperature
+                    });
+                  }
+                });
+              }
+            });
+          }
+        }
+      });
+    });
 
     /**
      * Listen on provided port, on all network interfaces.
@@ -82,21 +114,38 @@ db.connect({
     temSensor.on('change', (id, temp) => {
       console.log('Temp change', id, temp);
 
-      // Log temperature into DB
-      TemperatureLog.create({
-        temperature: temp,
-        deviceId: id
-      }, (err, tempLog) => {
+      // Get Settings Object
+      Settings.getOrCreateSettings((err, settings) => {
         if (err) {
-          console.error('Error storing TemperatureLog', err);
+          console.error('Error starting temperature sensor', err);
+          process.exit(1)
         } else {
-          // process temperature to see if we need to send any alerts
+          // Get Sensor settings
+          var sensorSetting = settings.findSensorSetting(id);
+          if (sensorSetting && sensorSetting.enabled) {
+            // Log temperature into DB
+            TemperatureLog.create({
+              temperature: temp,
+              deviceId: id
+            }, (err, tempLog) => {
+              if (err) {
+                console.error('Error storing TemperatureLog', err);
+              } else {
+                // Send to notification handler
+                notificationHandler.handle(log)
+                  .catch(err => {
+                    console.error('Error processing notification', err);
+                  });
 
-          // Emit change to websockets
-          io.sockets.emit('temperature', {
-            id: id,
-            temperature: temp
-          });
+                // Emit change to websockets
+                io.sockets.emit('temperature', {
+                  id: id,
+                  name: sensorSetting.name || id,
+                  temperature: temp
+                });
+              }
+            });
+          }
         }
       });
     });
@@ -105,14 +154,7 @@ db.connect({
       .start()
       .then((ids) => {
         console.log('Sensor IDS', ids);
-
-        console.log('Locals', app.locals);
         app.locals.sensors = ids;
-        console.log('Locals', app.locals);
-
-        // app.locals({
-        //   sensors: ids
-        // });
       })
       .catch(err => {
         console.error('Error starting temperature sensor', err);

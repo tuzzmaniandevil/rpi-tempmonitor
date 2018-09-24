@@ -5,7 +5,7 @@
         var socket = io();
 
         socket.on('temperature', function (msg) {
-            tempWrapper.html('<span class="text-center">' + msg.id + ' = ' + msg.temperature + ' &#8451;</span>');
+            tempWrapper.html('<span class="text-center">' + msg.name + ': ' + msg.temperature + ' &#8451;</span>');
         });
     }
 

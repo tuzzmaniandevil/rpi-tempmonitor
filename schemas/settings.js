@@ -40,6 +40,20 @@ const SettingsSchema = new mongoose.Schema({
     }]
 });
 
+SettingsSchema.methods.findSensorSetting = function (sensorid) {
+    var self = this;
+    if (self.sensors && self.sensors.length > 0) {
+        for (let i = 0; i < self.sensors.length; i++) {
+            const sensor = self.sensors[i];
+            if (sensor.id == sensorid) {
+                return sensor;
+            }
+        }
+    }
+
+    return null;
+}
+
 SettingsSchema.statics.getOrCreateSettings = function (cb) {
     Settings.findOne({})
         .exec(function (err, settings) {
