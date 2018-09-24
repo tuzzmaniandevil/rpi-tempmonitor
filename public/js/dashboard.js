@@ -26,9 +26,12 @@
                 return (a.updatedAt < b.updatedAt) ? -1 : (a.updatedAt > b.updatedAt) ? 1 : 0;
             });
 
+            // Decrease Size to max of 1000
+            data = data.slice(0, 1000);
+
             console.log('New Data', data);
 
-            historyArea.setData(data);
+            //historyArea.setData(data);
         });
     }
 
