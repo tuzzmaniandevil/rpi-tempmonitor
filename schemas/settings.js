@@ -36,7 +36,7 @@ const SettingsSchema = new mongoose.Schema({
     sensors: [{
         id: String,
         name: String,
-        enabled, Boolean
+        enabled: Boolean
     }]
 });
 
