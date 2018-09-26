@@ -20,8 +20,8 @@ TemperatureLogSchema.statics.findLatestByDevice = (sensorid, callback) => {
     });
 };
 
-TemperatureLogSchema.statics.findHistoryByDevice = (sensorid, callback) => {
-    return TemperatureLog.find({ deviceId: sensorid }, (err, logs) => {
+TemperatureLogSchema.statics.findHistoryByDevice = (sensorid, max, callback) => {
+    return TemperatureLog.find({ deviceId: sensorid }).limit(max).find((err, logs) => {
         return callback(err, logs);
     })
 };

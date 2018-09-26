@@ -89,7 +89,7 @@ db.connect({
                 });
 
                 // Get History
-                TemperatureLog.findHistoryByDevice(sensorid, (err, logs) => {
+                TemperatureLog.findHistoryByDevice(sensorid, 500, (err, logs) => {
                   if (err) {
                     console.error('Error getting logs for ' + sensorid, err);
                   } else {
