@@ -1,5 +1,5 @@
 var events = require('events');
-const W1Temp = require('w1temp');
+const W1Temp = require('../w1temp');
 const nodeEnv = process.env.NODE_ENV || 'dev';
 
 function tempSensors() {
@@ -39,7 +39,7 @@ tempSensors.prototype.start = function () {
                                     console.warn('Error adding mock hardware', err);
                                     reject(err);
                                 } else {
-                                    W1Temp.getSensor('28-800000263717').then((sensor) => {
+                                    W1Temp.getSensor('28-800000263717', true, 1000).then((sensor) => {
                                         sensor.on('change', (temp) => {
                                             self.emit('change', '28-800000263717', temp);
                                         });
