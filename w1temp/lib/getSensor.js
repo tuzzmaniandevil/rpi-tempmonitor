@@ -1,22 +1,37 @@
-import fileExistsWait from './fileExistsWait';
-import Sensor from './Sensor';
-import { SENSOR_UID_REGEXP } from './constants';
+'use strict';
 
-export default function getSensor(sensorUid, enablePolling = true, interval = 500) {
-  return new Promise((resolve, reject) => {
-    if (!SENSOR_UID_REGEXP.test(sensorUid)) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = getSensor;
+
+var _fileExistsWait = require('./fileExistsWait');
+
+var _fileExistsWait2 = _interopRequireDefault(_fileExistsWait);
+
+var _Sensor = require('./Sensor');
+
+var _Sensor2 = _interopRequireDefault(_Sensor);
+
+var _constants = require('./constants');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function getSensor(sensorUid) {
+  var enablePolling = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+  return new Promise(function (resolve, reject) {
+    if (!_constants.SENSOR_UID_REGEXP.test(sensorUid)) {
       reject(new Error('Bad sensor uid format'));
     } else {
-      const file = `/sys/bus/w1/devices/${sensorUid}/w1_slave`;
+      var file = '/sys/bus/w1/devices/' + sensorUid + '/w1_slave';
 
-      fileExistsWait(file)
-        .then(() => {
-          const sensor = new Sensor(file, enablePolling, interval);
-          resolve(sensor);
-        })
-        .catch(() => {
-          reject(new Error('Cant get sensor instance'));
-        });
+      (0, _fileExistsWait2.default)(file).then(function () {
+        var sensor = new _Sensor2.default(file, enablePolling);
+        resolve(sensor);
+      }).catch(function () {
+        reject(new Error('Cant get sensor instance'));
+      });
     }
   });
 }

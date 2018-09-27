@@ -1,11 +1,24 @@
-import fs from 'fs';
+'use strict';
 
-export default function fileExistsWait(file, maxMsWait = 20000) {
-  return new Promise((resolve, reject) => {
-    const endTime = +new Date() + maxMsWait;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = fileExistsWait;
 
-    const check = () => {
-      fs.stat(file, (err, stats) => {
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function fileExistsWait(file) {
+  var maxMsWait = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 20000;
+
+  return new Promise(function (resolve, reject) {
+    var endTime = +new Date() + maxMsWait;
+
+    var check = function check() {
+      _fs2.default.stat(file, function (err, stats) {
         if (stats && stats.isFile()) {
           resolve();
         } else if (err && err.code === 'ENOENT' && endTime > +new Date()) {
