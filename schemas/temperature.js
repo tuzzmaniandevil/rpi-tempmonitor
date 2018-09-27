@@ -11,7 +11,10 @@ const TemperatureLogSchema = new mongoose.Schema({
         trim: true
     }
 }, {
-        timestamps: true
+        timestamps: true,
+        capped: {
+            size: 2147483648 // 2 GB
+        }
     });
 
 TemperatureLogSchema.statics.findLatestByDevice = (sensorid, callback) => {
