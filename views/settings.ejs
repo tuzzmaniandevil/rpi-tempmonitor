@@ -15,9 +15,8 @@
                         Setpoints</h3>
                 </div>
                 <div class="panel-body">
-                    <form id="temperatureSetpointsForm" class="form-horizontal" action="<%- current_url %>" method="post">
+                    <form id="temperatureSetpointsForm" class="form-horizontal" action="<%- current_url %>/tempSetpoints" method="post">
                         <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
-                        <input type="hidden" name="updateAlarm" value="true" />
 
                         <div class="form-group">
                             <label for="highTempAlarmEnabled" class="col-sm-3 control-label">Enable High Alarm</label>
@@ -78,10 +77,9 @@
                     <h3 class="panel-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> Clicksend</h3>
                 </div>
                 <div class="panel-body">
-                    <form id="clicksendForm" class="form-horizontal" action="<%- current_url %>" method="post">
+                    <form id="clicksendForm" class="form-horizontal" action="<%- current_url %>/clicksend" method="post">
                         <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
 
-                        <input type="hidden" name="updateClicksend" value="true" />
                         <div class="form-group">
                             <label for="clicksendUsername" class="col-sm-3 control-label">Username</label>
                             <div class="col-sm-9">
@@ -115,10 +113,9 @@
                     <h3 class="panel-title"><i class="fa fa-file-text-o" aria-hidden="true"></i> Message Templates</h3>
                 </div>
                 <div class="panel-body">
-                    <form id="templateForm" class="form-horizontal" action="<%- current_url %>" method="post">
+                    <form id="templateForm" class="form-horizontal" action="<%- current_url %>/messageTemplates" method="post">
                         <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
 
-                        <input type="hidden" name="updateTemplate" value="true" />
                         <div class="form-group">
                             <label for="smsTemplate" class="col-sm-3 control-label">SMS Template</label>
                             <div class="col-sm-9">

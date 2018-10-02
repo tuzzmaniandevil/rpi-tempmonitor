@@ -184,7 +184,7 @@ router.post('/tempSetpoints', auths('ADMIN'), (req, res, next) => {
 });
 
 /* POST Message Templates */
-router.post('/clicksend', auths('ADMIN'), (req, res, next) => {
+router.post('/messageTemplates', auths('ADMIN'), (req, res, next) => {
     Settings.getOrCreateSettings((err, settings) => {
         if (err) {
             next(err);
