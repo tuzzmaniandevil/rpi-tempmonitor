@@ -15,7 +15,7 @@
                         Setpoints</h3>
                 </div>
                 <div class="panel-body">
-                    <form id="alarmForm" class="form-horizontal" action="<%- current_url %>" method="post">
+                    <form id="temperatureSetpointsForm" class="form-horizontal" action="<%- current_url %>" method="post">
                         <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
                         <input type="hidden" name="updateAlarm" value="true" />
 
@@ -36,8 +36,7 @@
                             <div class="col-sm-9">
                                 <input <% if(!settings.highTempAlarmEnabled){ %> disabled
                                 <% } %> class="form-control" min="0" type="number" id="highTempAlarm"
-                                name="highTempAlarm" value="
-                                <%- settings.highTempAlarm %>" />
+                                name="highTempAlarm" step="0.05" value="<%- settings.highTempAlarm %>" />
                             </div>
                         </div>
 
@@ -58,8 +57,7 @@
                             <div class="col-sm-9">
                                 <input <% if(!settings.lowTempAlarmEnabled){ %> disabled
                                 <% } %> class="form-control" min="0" type="number" id="lowTempAlarm"
-                                name="lowTempAlarm" value="
-                                <%- settings.lowTempAlarm %>" />
+                                name="lowTempAlarm" step="0.05" value="<%- settings.lowTempAlarm %>" />
                             </div>
                         </div>
 

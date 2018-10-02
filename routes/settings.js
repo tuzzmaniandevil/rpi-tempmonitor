@@ -104,4 +104,112 @@ router.post('/sensors', auths('ADMIN'), (req, res, next) => {
     });
 });
 
+/* POST Clicksend settings */
+router.post('/clicksend', auths('ADMIN'), (req, res, next) => {
+    Settings.getOrCreateSettings((err, settings) => {
+        if (err) {
+            next(err);
+        } else {
+            var clicksendUsername = req.body.clicksendUsername;
+            var clicksendKey = req.body.clicksendKey;
+
+            settings.clicksendUsername = clicksendUsername;
+            settings.clicksendKey = clicksendKey;
+
+            settings.save((err, updatedSettings) => {
+                if (err) {
+                    res.json({
+                        status: false,
+                        message: err.message
+                    });
+                } else {
+                    res.json({
+                        status: true,
+                        message: 'Successfully updated Clicksend'
+                    });
+                }
+            });
+        }
+    });
+});
+
+/* POST Temperature Setpoints settings */
+router.post('/tempSetpoints', auths('ADMIN'), (req, res, next) => {
+    Settings.getOrCreateSettings((err, settings) => {
+        if (err) {
+            next(err);
+        } else {
+            var highTempAlarmEnabled = req.body.highTempAlarmEnabled == 'true';
+            var highTempAlarm = req.body.highTempAlarm;
+
+            var lowTempAlarmEnabled = req.body.lowTempAlarmEnabled == 'true';
+            var lowTempAlarm = req.body.lowTempAlarm;
+
+            var requiredFields = [];
+
+            if (highTempAlarmEnabled) {
+                requiredFields.push('highTempAlarm');
+            }
+            if (lowTempAlarmEnabled) {
+                requiredFields.push('lowTempAlarm');
+            }
+
+            if (checkRequired(req, res, requiredFields)) {
+                settings.highTempAlarmEnabled = highTempAlarmEnabled;
+                if (highTempAlarmEnabled) {
+                    settings.highTempAlarm = highTempAlarm;
+                }
+
+                settings.lowTempAlarmEnabled = lowTempAlarmEnabled;
+                if (lowTempAlarmEnabled) {
+                    settings.lowTempAlarm = lowTempAlarm;
+                }
+
+                settings.save((err, updatedSettings) => {
+                    if (err) {
+                        res.json({
+                            status: false,
+                            message: err.message
+                        });
+                    } else {
+                        res.json({
+                            status: true,
+                            message: 'Successfully updated Temperature Setpoints'
+                        });
+                    }
+                });
+            }
+        }
+    });
+});
+
+/* POST Message Templates */
+router.post('/clicksend', auths('ADMIN'), (req, res, next) => {
+    Settings.getOrCreateSettings((err, settings) => {
+        if (err) {
+            next(err);
+        } else {
+            var smsTemplate = req.body.smsTemplate;
+            var voiceTemplate = req.body.voiceTemplate;
+
+            settings.smsTemplate = smsTemplate;
+            settings.voiceTemplate = voiceTemplate;
+
+            settings.save((err, updatedSettings) => {
+                if (err) {
+                    res.json({
+                        status: false,
+                        message: err.message
+                    });
+                } else {
+                    res.json({
+                        status: true,
+                        message: 'Successfully updated Message Templates'
+                    });
+                }
+            });
+        }
+    });
+});
+
 module.exports = router;

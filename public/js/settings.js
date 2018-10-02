@@ -1,4 +1,47 @@
 (function ($) {
+    // Init Temperature Setpoints
+    function initTemperatureSetpoints() {
+        var form = $('#temperatureSetpointsForm');
+
+        // Form Submit
+        form.forms({
+            onSuccess: function () {
+                form.forms('reset');
+
+                swal({
+                    title: 'Success',
+                    text: resp.message,
+                    type: 'success',
+                    closeOnConfirm: false
+                }, function () {
+                    window.location.reload(true);
+                });
+            }
+        });
+
+        // High temp selector
+        var highTempAlarmEnabled = form.find('[name="highTempAlarmEnabled"]');
+        var highTempAlarm = form.find('[name="highTempAlarm"]');
+
+        highTempAlarmEnabled.on('change', function () {
+            var val = highTempAlarmEnabled.val();
+            var enabled = val == 'true';
+            highTempAlarm.prop('disabled', !enabled);
+        });
+        highTempAlarmEnabled.change();
+
+        // Low temp selector
+        var lowTempAlarmEnabled = form.find('[name="lowTempAlarmEnabled"]');
+        var lowTempAlarm = form.find('[name="lowTempAlarm"]');
+
+        lowTempAlarmEnabled.on('change', function () {
+            var val = lowTempAlarmEnabled.val();
+            var enabled = val == 'true';
+            lowTempAlarm.prop('disabled', !enabled);
+        });
+        lowTempAlarmEnabled.change();
+    }
+
     // Init Sensors
     function initSensors() {
         var modal = $('#editSensorModal');
@@ -87,5 +130,6 @@
     // Init
     $(function () {
         initSensors();
+        initTemperatureSetpoints();
     });
 })(jQuery);
