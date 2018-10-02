@@ -8,14 +8,17 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-md-6">
+
+            <!-- Temperature Setpoints -->
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-thermometer-half" aria-hidden="true"></i> Temperature
                         Setpoints</h3>
                 </div>
                 <div class="panel-body">
-                    <form id="temperatureSetpointsForm" class="form-horizontal" action="<%- current_url %>/tempSetpoints" method="post">
+                    <form id="temperatureSetpointsForm" class="form-horizontal" action="<%- current_url %>/tempSetpoints"
+                        method="post">
                         <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
 
                         <div class="form-group">
@@ -33,9 +36,13 @@
                         <div class="form-group">
                             <label for="highTempAlarm" class="col-sm-3 control-label">High Alarm</label>
                             <div class="col-sm-9">
-                                <input <% if(!settings.highTempAlarmEnabled){ %> disabled
-                                <% } %> class="form-control" min="0" type="number" id="highTempAlarm"
-                                name="highTempAlarm" step="0.05" value="<%- settings.highTempAlarm %>" />
+                                <div class="input-group">
+                                    <input <% if(!settings.highTempAlarmEnabled){ %> disabled
+                                    <% } %> class="form-control" min="0" type="number" id="highTempAlarm"
+                                    name="highTempAlarm" step="0.05" value="
+                                    <%- settings.highTempAlarm %>" />
+                                    <span class="input-group-addon">&#8451;</span>
+                                </div>
                             </div>
                         </div>
 
@@ -54,9 +61,13 @@
                         <div class="form-group">
                             <label for="lowTempAlarm" class="col-sm-3 control-label">Low Alarm</label>
                             <div class="col-sm-9">
-                                <input <% if(!settings.lowTempAlarmEnabled){ %> disabled
-                                <% } %> class="form-control" min="0" type="number" id="lowTempAlarm"
-                                name="lowTempAlarm" step="0.05" value="<%- settings.lowTempAlarm %>" />
+                                <div class="input-group">
+                                    <input <% if(!settings.lowTempAlarmEnabled){ %> disabled
+                                    <% } %> class="form-control" min="0" type="number" id="lowTempAlarm"
+                                    name="lowTempAlarm" step="0.05" value="
+                                    <%- settings.lowTempAlarm %>" />
+                                    <span class="input-group-addon">&#8451;</span>
+                                </div>
                             </div>
                         </div>
 
@@ -69,45 +80,9 @@
                     </form>
                 </div>
             </div>
-        </div>
+            <!-- /Temperature Setpoints -->
 
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> Clicksend</h3>
-                </div>
-                <div class="panel-body">
-                    <form id="clicksendForm" class="form-horizontal" action="<%- current_url %>/clicksend" method="post">
-                        <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
-
-                        <div class="form-group">
-                            <label for="clicksendUsername" class="col-sm-3 control-label">Username</label>
-                            <div class="col-sm-9">
-                                <input type="text" name="clicksendUsername" class="form-control" id="clicksendUsername"
-                                    placeholder="Clicksend Username" value="<%- settings.clicksendUsername %>" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="clicksendKey" class="col-sm-3 control-label">Key</label>
-                            <div class="col-sm-9">
-                                <input type="text" name="clicksendKey" class="form-control" id="clicksendKey"
-                                    placeholder="Clicksend Key" value="<%- settings.clicksendKey %>" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-9 col-sm-offset-3">
-                                <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> Save</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
+            <!-- Message Templates  -->
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-file-text-o" aria-hidden="true"></i> Message Templates</h3>
@@ -119,15 +94,13 @@
                         <div class="form-group">
                             <label for="smsTemplate" class="col-sm-3 control-label">SMS Template</label>
                             <div class="col-sm-9">
-                                <input type="text" name="smsTemplate" class="form-control" id="smsTemplate" placeholder="SMS Template"
-                                    value="<%- settings.smsTemplate %>" />
+                                <textarea name="smsTemplate" class="form-control" id="smsTemplate"><%- settings.smsTemplate %></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="voiceTemplate" class="col-sm-3 control-label">Voice Template</label>
                             <div class="col-sm-9">
-                                <input type="text" name="voiceTemplate" class="form-control" id="voiceTemplate"
-                                    placeholder="Voice Template" value="<%- settings.voiceTemplate %>" />
+                                <textarea name="voiceTemplate" class="form-control" id="voiceTemplate"><%- settings.voiceTemplate %></textarea>
                             </div>
                         </div>
 
@@ -139,41 +112,9 @@
                     </form>
                 </div>
             </div>
-        </div>
+            <!-- /Message Templates  -->
 
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-bell-o" aria-hidden="true"></i> Notifications</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#addContactModal"><i
-                                    class="fa fa-plus"></i> Add Contact</button>
-                        </div>
-                    </div>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Contact</th>
-                                <th>High notification</th>
-                                <th>Low notification</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row">
-
-        <div class="col-lg-6">
+            <!-- Sensors -->
             <div class="panel panel-default" id="sensors-panel">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-wrench" aria-hidden="true"></i> Sensors</h3>
@@ -225,8 +166,74 @@
                     </table>
                 </div>
             </div>
-        </div>
+            <!-- /Sensors -->
 
+        </div>
+        <div class="col-md-6">
+
+            <!-- Clicksend -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> Clicksend</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="clicksendForm" class="form-horizontal" action="<%- current_url %>/clicksend" method="post">
+                        <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
+
+                        <div class="form-group">
+                            <label for="clicksendUsername" class="col-sm-3 control-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="clicksendUsername" class="form-control" id="clicksendUsername"
+                                    placeholder="Clicksend Username" value="<%- settings.clicksendUsername %>" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="clicksendKey" class="col-sm-3 control-label">Key</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="clicksendKey" class="form-control" id="clicksendKey"
+                                    placeholder="Clicksend Key" value="<%- settings.clicksendKey %>" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-3">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /Clicksend -->
+
+            <!-- Notifications -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-bell-o" aria-hidden="true"></i> Notifications</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#addContactModal"><i
+                                    class="fa fa-plus"></i> Add Contact</button>
+                        </div>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Contact</th>
+                                <th>High notification</th>
+                                <th>Low notification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /Notifications -->
+
+        </div>
     </div>
 </div>
 
@@ -248,7 +255,9 @@
                             <select class="form-control" name="contact" id="contact" required>
                                 <% if(contacts.length > 0) { %>
                                 <% contacts.forEach(function(contact){ %>
-                                    <option value="<%- contact.id %>"><% contact.formattedName() %></option>
+                                <option value="<%- contact.id %>">
+                                    <% contact.formattedName() %>
+                                </option>
                                 <% }); %>
                                 <% } else { %>
                                 <option value="">[Please add a contact first]</option>
