@@ -1,5 +1,5 @@
 var events = require('events');
-const W1Temp = require('../w1temp');
+const W1Temp = require('w1temp');
 const nodeEnv = process.env.NODE_ENV || 'dev';
 
 function tempSensors() {
@@ -68,7 +68,7 @@ tempSensors.prototype.start = function () {
                 for (let i = 0; i < ids.length; i++) {
                     const id = ids[i];
 
-                    W1Temp.getSensor(id).then((sensor) => {
+                    W1Temp.getSensor(id, true, 1000, false).then((sensor) => {
                         sensor.on('change', (temp) => {
                             self.emit('change', id, temp);
                         });

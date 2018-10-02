@@ -35,6 +35,6 @@
     "passport": "~0.4.0",
     "passport-local": "~1.0.0",
     "socket.io": "~2.1.1",
-    "w1temp": "^4.3.0"
+    "w1temp": "~4.4.0"
   }
 }
