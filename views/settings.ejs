@@ -86,7 +86,7 @@
                     <h3 class="panel-title"><i class="fa fa-file-text-o" aria-hidden="true"></i> Message Templates</h3>
                 </div>
                 <div class="panel-body">
-                    <form id="templateForm" class="form-horizontal" action="<%- current_url %>/messageTemplates" method="post">
+                    <form id="messageTemplatesForm" class="form-horizontal" action="<%- current_url %>/messageTemplates" method="post">
                         <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
 
                         <div class="form-group">
@@ -99,6 +99,14 @@
                             <label for="voiceTemplate" class="col-sm-3 control-label">Voice Template</label>
                             <div class="col-sm-9">
                                 <textarea name="voiceTemplate" class="form-control" id="voiceTemplate"><%- settings.voiceTemplate %></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <small>
+                                    <i>The following variables are availables:</i>
+                                </small>
                             </div>
                         </div>
 
@@ -211,8 +219,8 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#addContactModal"><i
-                                    class="fa fa-plus"></i> Add Contact</button>
+                            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#addNotificationModal"><i
+                                    class="fa fa-plus"></i> Add Notification</button>
                         </div>
                     </div>
                     <table class="table table-hover">
@@ -221,10 +229,64 @@
                                 <th>Contact</th>
                                 <th>High notification</th>
                                 <th>Low notification</th>
+                                <th>Timeout</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            <% notificationSettings.forEach((ns) => { %>
+                            <tr data-notificationid="<%- ns.id %>">
+                                <td><%- ns.contact.formattedName() %></td>
+                                <td>
+                                    <% switch(ns.highNotification) {
+                                        case 'SMS_VOICE': %>
+                                            SMS and Voice
+                                            <% break;
+                                        case 'SMS': %>
+                                            SMS Only
+                                            <% break;
+                                        case 'VOICE': %>
+                                            Voice Only
+                                            <% break;
+                                        default: %>
+                                            None
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% switch(ns.lowNotification) {
+                                        case 'SMS_VOICE': %>
+                                            SMS and Voice
+                                            <% break;
+                                        case 'SMS': %>
+                                            SMS Only
+                                            <% break;
+                                        case 'VOICE': %>
+                                            Voice Only
+                                            <% break;
+                                        default: %>
+                                            None
+                                    <% } %>
+                                </td>
+                                <td><%- ns.timeBetween %> Minutes</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <i class="fa fa-cog"></i> <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li>
+                                                <a class="btn-edit-notification" href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                                            </li>
+                                            <li role="separator" class="divider"></li>
+                                            <li>
+                                                <a class="btn-delete-notification" href="#"><i class="fa fa-trash"></i> Delete</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% }); %>
                         </tbody>
                     </table>
                 </div>
@@ -235,14 +297,14 @@
     </div>
 </div>
 
-<div class="modal fade" id="addContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel"
+<div class="modal fade" id="addNotificationModal" tabindex="-1" role="dialog" aria-labelledby="addNotificationModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form role="form" action="/users/add" method="post" class="form-horizontal">
+            <form role="form" data-default-action="<%- current_url %>/notifications" action="<%- current_url %>/notifications" method="post" class="form-horizontal">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="addContactModalLabel">Add Contact</h4>
+                    <h4 class="modal-title" id="addNotificationModalLabel">Add Notification</h4>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-danger err-msg" role="alert" style="display: none;"></div>
@@ -252,10 +314,9 @@
                         <div class="col-sm-9">
                             <select class="form-control" name="contact" id="contact" required>
                                 <% if(contacts.length > 0) { %>
+                                <option value="">[Please select a contact]</option>
                                 <% contacts.forEach(function(contact){ %>
-                                <option value="<%- contact.id %>">
-                                    <% contact.formattedName() %>
-                                </option>
+                                <option value="<%- contact.id %>"><%- contact.formattedName() %></option>
                                 <% }); %>
                                 <% } else { %>
                                 <option value="">[Please add a contact first]</option>
@@ -287,10 +348,21 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="timeBetween" class="col-sm-3 control-label">
+                            Timeout
+                            <br/>
+                            <small><i>In minutes</i></small>
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" name="timeBetween" id="timeBetween" min="1" value="1" required />
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary btn-submit">Create</button>
                 </div>
             </form>
         </div>
@@ -347,6 +419,7 @@
     <!-- /.modal-dialog -->
 </div>
 
+<% extraJs.push('/vendor/bootstrap-maxlength/bootstrap-maxlength.js') %>
 <% extraJs.push('/js/settings.js') %>
 
 <%- include('footer'); -%>

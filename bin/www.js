@@ -23,7 +23,7 @@ var Settings = require('../schemas/settings');
 var TemperatureLog = require('../schemas/temperature');
 var notificationHandler = require('./notificationHandler');
 
-var server, app, io;
+var server, app, io, port;
 
 /**
  * First connect to DB then start web-server if DB connection was successful
@@ -49,7 +49,7 @@ db.connect({
     /**
      * Get port from environment and store in Express.
      */
-    var port = normalizePort(process.env.PORT || '3000');
+    port = normalizePort(process.env.PORT || '3000');
     app.set('port', port);
 
     /**
@@ -187,7 +187,7 @@ db.connect({
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  let port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe

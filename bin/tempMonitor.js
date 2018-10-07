@@ -12,7 +12,14 @@ function tempSensors() {
 tempSensors.prototype.__proto__ = events.EventEmitter.prototype;
 
 tempSensors.prototype.getSensorsUids = function (masterBusId) {
-    return W1Temp.getSensorsUids(masterBusId);
+    console.log('getSensorsUids', nodeEnv);
+    if (nodeEnv == 'dev') {
+        return new Promise((resolve, reject) => {
+            resolve(['28-800000263717']);
+        });
+    } else {
+        return W1Temp.getSensorsUids(masterBusId);
+    }
 };
 
 tempSensors.prototype.start = function () {
@@ -27,7 +34,8 @@ tempSensors.prototype.start = function () {
                 let f = {
                     "behavior": "function",
                     "temperature": function () {
-                        return Math.random() * 100000;
+                        const t = Math.floor(Math.random() * (1 + 300000 - 150000)) + 150000;
+                        return t / 10;
                     }
                 };
 
@@ -39,11 +47,11 @@ tempSensors.prototype.start = function () {
                                     console.warn('Error adding mock hardware', err);
                                     reject(err);
                                 } else {
-                                    W1Temp.getSensor('28-800000263717', true, 1000).then((sensor) => {
+                                    W1Temp.getSensor('28-800000263717', true, 1000, false).then((sensor) => {
                                         sensor.on('change', (temp) => {
                                             self.emit('change', '28-800000263717', temp);
                                         });
-                                        resolve();
+                                        resolve(['28-800000263717']);
                                     }).catch(err => {
                                         reject(err);
                                     });

@@ -43,10 +43,21 @@
                             <%- contact.landline %>
                         </td>
                         <td>
-                            <a href="<%- current_url + '/' + contact.id %>" class="btn btn-sm btn-info" title="Edit Contact"><i
-                                    class="fa fa-pencil"></i></a>
-                            <button type="button" class="btn btn-sm btn-warning btn-del-contact" title="Delete Contact"><i
-                                    class="fa fa-trash"></i></button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <i class="fa fa-cog"></i> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a class="btn-edit-contact" href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a class="btn-del-contact" href="#"><i class="fa fa-trash"></i> Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     <% }); %>
@@ -65,7 +76,7 @@
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form role="form" action="/contacts/add" method="post" class="form-horizontal">
+            <form role="form" data-default-action="/contacts" action="/contacts" method="post" class="form-horizontal">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="addContactModalLabel">Add Contact</h4>
@@ -117,7 +128,7 @@
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <select name="mobile-region" class="btn btn-default">
+                                    <select name="landline-region" class="btn btn-default">
                                         <% supportedCountries.forEach(function(cc){ %>
                                         <option value="<%- cc.regionCode %>">
                                             <%= cc.regionCode %> (+<%- cc.countryCode %>)
@@ -132,7 +143,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary btn-submit">Create</button>
                 </div>
             </form>
         </div>
@@ -141,6 +152,8 @@
     <!-- /.modal-dialog -->
 </div>
 
+
+<% extraJs.push('/vendor/libphonenumber-js/libphonenumber-js.min.js') %>
 <% extraJs.push('/js/contacts.js') %>
 
 <%- include('footer'); -%>

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const util = require('util');
+const NotificationSetting = require('./notificationSetting');
 
 const ContactSchema = new mongoose.Schema({
     firstName: {
@@ -14,7 +15,6 @@ const ContactSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true,
         required: false,
         trim: true
     },
@@ -34,10 +34,25 @@ const ContactSchema = new mongoose.Schema({
         timestamps: true
     });
 
+ContactSchema.pre('remove', { document: true, query: true }, function (next) {
+    var _self = this;
+
+    // Remove any related notifications
+    NotificationSetting.remove({
+        contact: mongoose.Types.ObjectId(_self.id)
+    }, (err) => {
+        if (err) {
+            next(err);
+        } else {
+            next();
+        }
+    });
+});
+
 ContactSchema.methods.formattedName = function () {
     var _self = this;
 
-    if (_self.firstName && _self.firstName.trim()) {
+    if (_self.firstName && _self.firstName.trim().length > 0) {
         return util.format('%s %s', _self.firstName, _self.lastName).trim();
     } else {
         return _self._id;

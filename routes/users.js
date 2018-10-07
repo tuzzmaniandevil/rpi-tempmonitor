@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var auths = require('../bin/authenticated');
+var checkRequired = require('../bin/requiredFields');
 var User = require('../schemas/user');
 var createError = require('http-errors');
 
@@ -18,7 +19,7 @@ router.get('/', auths('ADMIN'), function (req, res, next) {
   });
 });
 
-router.post('/add', auths('ADMIN'), function (req, res, next) {
+router.post('/', auths('ADMIN'), function (req, res, next) {
   if (checkRequired(req, res, ['username', 'firstName', 'password', 'password_conf'])) {
     if (req.body.password === req.body.password_conf) {
       var newUsername = req.body.username.trim().toLowerCase();
@@ -113,6 +114,12 @@ router.post('/:userId', auths('ADMIN'), function (req, res) {
           user.firstName = req.body.firstName;
           user.lastName = req.body.lastName;
 
+          if (res.locals.currentUser.id != user.id && req.body.role) {
+            var role = req.body.role || 'VIEWER';
+            role = role.toUpperCase();
+            user.roles = [role];
+          }
+
           user.save(function (err, updatedUser) {
             if (err) {
               res.json({
@@ -184,31 +191,5 @@ router.delete('/:userId', auths('ADMIN'), function (req, res) {
     }
   });
 });
-
-function checkRequired(req, res, fields) {
-  var missingFields = [];
-
-  for (let i = 0; i < fields.length; i++) {
-    const field = fields[i];
-
-    var val = req.body[field];
-
-    if (!(typeof val === 'string' && val.length > 0)) {
-      missingFields.push(field);
-    }
-  }
-
-  if (missingFields.length > 0) {
-    res.json({
-      status: false,
-      message: 'Missing required fields',
-      fields: missingFields
-    });
-
-    return false;
-  } else {
-    return true;
-  }
-}
 
 module.exports = router;

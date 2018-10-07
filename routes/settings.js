@@ -3,6 +3,7 @@ const router = express.Router();
 const auths = require('../bin/authenticated');
 const Settings = require('../schemas/settings');
 const Contact = require('../schemas/contact');
+const NotificationSetting = require('../schemas/notificationSetting');
 const checkRequired = require('../bin/requiredFields');
 
 /* GET settings */
@@ -12,12 +13,12 @@ router.get('/', auths('ADMIN'), (req, res, next) => {
             next(err);
         } else {
             // Get Sensors
-            var sensors = [];
+            let sensors = [];
             if (req.app.locals.sensors && req.app.locals.sensors.length > 0) {
-                var configuredSensors = settings.sensors || [];
+                let configuredSensors = settings.sensors || [];
 
                 req.app.locals.sensors.forEach(sensorId => {
-                    var sensor = {
+                    let sensor = {
                         id: sensorId,
                         name: null,
                         enabled: false
@@ -42,7 +43,19 @@ router.get('/', auths('ADMIN'), (req, res, next) => {
                 if (err) {
                     next(err);
                 } else {
-                    res.render('settings', { title: 'Settings', settings: settings, sensors: sensors, contacts: contacts });
+                    NotificationSetting.find({}).populate('contact').find((nErr, notificationSettings) => {
+                        if (nErr) {
+                            next(nErr);
+                        } else {
+                            res.render('settings', {
+                                title: 'Settings',
+                                settings: settings,
+                                sensors: sensors,
+                                contacts: contacts,
+                                notificationSettings: notificationSettings
+                            });
+                        }
+                    });
                 }
             });
         }
@@ -56,12 +69,12 @@ router.post('/sensors', auths('ADMIN'), (req, res, next) => {
             next(err);
         } else {
             if (checkRequired(req, res, ['sensorid', 'name', 'enabled'])) {
-                var sensorid = req.body.sensorid;
-                var name = req.body.name;
-                var enabled = req.body.enabled.toLowerCase() == 'true';
+                let sensorid = req.body.sensorid;
+                let name = req.body.name;
+                let enabled = req.body.enabled.toLowerCase() == 'true';
 
-                var sensors = settings.sensors || [];
-                var found = false;
+                let sensors = settings.sensors || [];
+                let found = false;
 
                 sensors.forEach(sensor => {
                     if (sensor.id == sensorid) {
@@ -75,7 +88,7 @@ router.post('/sensors', auths('ADMIN'), (req, res, next) => {
                 });
 
                 if (!found) {
-                    var sensor = {
+                    let sensor = {
                         id: sensorid,
                         name: name,
                         enabled: enabled
@@ -110,8 +123,8 @@ router.post('/clicksend', auths('ADMIN'), (req, res, next) => {
         if (err) {
             next(err);
         } else {
-            var clicksendUsername = req.body.clicksendUsername;
-            var clicksendKey = req.body.clicksendKey;
+            let clicksendUsername = req.body.clicksendUsername;
+            let clicksendKey = req.body.clicksendKey;
 
             settings.clicksendUsername = clicksendUsername;
             settings.clicksendKey = clicksendKey;
@@ -139,13 +152,13 @@ router.post('/tempSetpoints', auths('ADMIN'), (req, res, next) => {
         if (err) {
             next(err);
         } else {
-            var highTempAlarmEnabled = req.body.highTempAlarmEnabled == 'true';
-            var highTempAlarm = req.body.highTempAlarm;
+            let highTempAlarmEnabled = req.body.highTempAlarmEnabled == 'true';
+            let highTempAlarm = req.body.highTempAlarm;
 
-            var lowTempAlarmEnabled = req.body.lowTempAlarmEnabled == 'true';
-            var lowTempAlarm = req.body.lowTempAlarm;
+            let lowTempAlarmEnabled = req.body.lowTempAlarmEnabled == 'true';
+            let lowTempAlarm = req.body.lowTempAlarm;
 
-            var requiredFields = [];
+            let requiredFields = [];
 
             if (highTempAlarmEnabled) {
                 requiredFields.push('highTempAlarm');
@@ -187,10 +200,13 @@ router.post('/tempSetpoints', auths('ADMIN'), (req, res, next) => {
 router.post('/messageTemplates', auths('ADMIN'), (req, res, next) => {
     Settings.getOrCreateSettings((err, settings) => {
         if (err) {
-            next(err);
+            res.json({
+                status: false,
+                message: err.message
+            });
         } else {
-            var smsTemplate = req.body.smsTemplate;
-            var voiceTemplate = req.body.voiceTemplate;
+            let smsTemplate = req.body.smsTemplate;
+            let voiceTemplate = req.body.voiceTemplate;
 
             settings.smsTemplate = smsTemplate;
             settings.voiceTemplate = voiceTemplate;
@@ -205,6 +221,129 @@ router.post('/messageTemplates', auths('ADMIN'), (req, res, next) => {
                     res.json({
                         status: true,
                         message: 'Successfully updated Message Templates'
+                    });
+                }
+            });
+        }
+    });
+});
+
+/* POST notification settings */
+router.post('/notifications', auths('ADMIN'), (req, res, next) => {
+    Settings.getOrCreateSettings((err, settings) => {
+        if (err) {
+            next(err);
+        } else {
+            if (checkRequired(req, res, ['contact', 'highNotification', 'lowNotification', 'timeBetween'])) {
+                let contact = req.body.contact;
+                let highNotification = req.body.highNotification;
+                let lowNotification = req.body.lowNotification;
+                let timeBetween = req.body.timeBetween;
+
+                NotificationSetting.create({
+                    contact: contact,
+                    highNotification: highNotification,
+                    lowNotification: lowNotification,
+                    timeBetween: timeBetween
+                }, (err, newNotification) => {
+                    if (err) {
+                        res.json({
+                            status: false,
+                            message: err.message
+                        });
+                    } else {
+                        res.json({
+                            status: true,
+                            message: 'Successfully added notification'
+                        });
+                    }
+                });
+            }
+        }
+    });
+});
+
+/* GET notification setting */
+router.get('/notifications/:notificationid', auths('ADMIN'), (req, res, next) => {
+    var nid = req.params.notificationid;
+
+    NotificationSetting.findById(nid, (err, nis) => {
+        if (err) {
+            res.json({
+                status: false,
+                message: err.message
+            });
+        } else {
+            res.json({
+                status: true,
+                message: 'Success',
+                data: nis.toJSON({ virtuals: true })
+            });
+        }
+    });
+});
+
+/* POST notification setting */
+router.post('/notifications/:notificationid', auths('ADMIN'), (req, res, next) => {
+    var nid = req.params.notificationid;
+
+    NotificationSetting.findById(nid, (err, nis) => {
+        if (err) {
+            res.json({
+                status: false,
+                message: err.message
+            });
+        } else {
+            if (checkRequired(req, res, ['contact', 'highNotification', 'lowNotification', 'timeBetween'])) {
+                let contact = req.body.contact;
+                let highNotification = req.body.highNotification;
+                let lowNotification = req.body.lowNotification;
+                let timeBetween = req.body.timeBetween;
+
+                nis.contact = contact;
+                nis.highNotification = highNotification;
+                nis.lowNotification = lowNotification;
+                nis.timeBetween = timeBetween;
+
+                nis.save((err, updatedNis) => {
+                    if (err) {
+                        res.json({
+                            status: false,
+                            message: err.message
+                        });
+                    } else {
+                        res.json({
+                            status: true,
+                            message: 'Successfully updated'
+                        });
+                    }
+                });
+            }
+        }
+    });
+});
+
+/* DELETE notification setting */
+router.delete('/notifications/:notificationid', auths('ADMIN'), (req, res, next) => {
+    var nid = req.params.notificationid;
+
+    NotificationSetting.findById(nid, (err, nis) => {
+        if (err) {
+            res.json({
+                status: false,
+                message: err.message
+            });
+        } else {
+            nis.remove((err2) => {
+                if (err2) {
+                    res.json({
+                        status: false,
+                        message: err2.message
+                    });
+                } else {
+                    res.json({
+                        status: true,
+                        message: 'Successfully deleted notification'
                     });
                 }
             });

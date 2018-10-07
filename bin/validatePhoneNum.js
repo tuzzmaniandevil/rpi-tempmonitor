@@ -1,7 +1,7 @@
 const PNF = require('google-libphonenumber').PhoneNumberFormat;
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
-function checkRequired(req, res, fields) {
+function validate(req, res, fields) {
     var missingFields = [];
 
     if (fields === null || typeof fields === 'undefined') {
@@ -9,21 +9,27 @@ function checkRequired(req, res, fields) {
     }
 
     for (let i = 0; i < fields.length; i++) {
-        const field = fields[i];
+        let field = fields[i];
+        let regionField = field + '-region';
 
-        var val = req.body[field];
+        let val = req.body[field];
+        let region = req.body[regionField];
 
-        if (phoneUtil.isValidNumber(val)) {
-            req.body[field] = phoneUtil.format(val, PNF.E164);
-        } else {
-            missingFields.push(field);
+        if (typeof val === 'string' && val.length > 0) {
+            let number = phoneUtil.parseAndKeepRawInput(val, region);
+
+            if (phoneUtil.isValidNumberForRegion(number, region)) {
+                req.body[field] = phoneUtil.format(number, PNF.E164);
+            } else {
+                missingFields.push(field);
+            }
         }
     }
 
     if (missingFields.length > 0) {
         res.json({
             status: false,
-            message: 'Missing required fields',
+            message: 'Invalid phone number' + (missingFields.length > 1 ? 's' : ''),
             fields: missingFields
         });
 
@@ -51,5 +57,5 @@ function supportedCountries() {
     return result;
 }
 
-module.exports.validate = checkRequired;
+module.exports.validate = validate;
 module.exports.supportedCountries = supportedCountries;

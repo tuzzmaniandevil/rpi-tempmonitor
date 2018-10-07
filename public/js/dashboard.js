@@ -21,8 +21,6 @@
         });
 
         socket.on('temperature_history', function (msg) {
-            console.log('temp history', msg);
-
             data = uniq(data.concat(msg.data), '_id');
             data.sort(function (a, b) {
                 var result = (a.updatedAt < b.updatedAt) ? -1 : (a.updatedAt > b.updatedAt) ? 1 : 0;

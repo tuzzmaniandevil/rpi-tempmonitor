@@ -6,7 +6,7 @@ const checkRequired = require('../bin/requiredFields');
 const validatePhone = require('../bin/validatePhoneNum');
 
 /* GET Contacts */
-router.get('/', auths('ADMIN'), function (req, res, next) {
+router.get('/', auths('ADMIN'), (req, res, next) => {
     Contact.find({}, function (err, contacts) {
         if (err) {
             next(err);
@@ -19,12 +19,12 @@ router.get('/', auths('ADMIN'), function (req, res, next) {
 /**
  * Create a new Contact
  */
-router.post('/add', auths('ADMIN'), function (req, res, next) {
-    if (checkRequired(req, res, ['firstName'])) {
-        var firstName = req.body.firstName;
-        var lastName = req.body.lastName;
-        var mobile = req.body.mobile;
-        var landline = req.body.landline;
+router.post('/', auths('ADMIN'), (req, res, next) => {
+    if (checkRequired(req, res, ['firstName']) && validatePhone.validate(req, res, ['mobile', 'landline'])) {
+        let firstName = req.body.firstName;
+        let lastName = req.body.lastName;
+        let mobile = req.body.mobile;
+        let landline = req.body.landline;
 
         if (!(mobile && mobile.trim().length > 0) && !(landline && landline.trim().length > 0)) {
             res.json({
@@ -55,6 +55,100 @@ router.post('/add', auths('ADMIN'), function (req, res, next) {
     }
 });
 
+/* GET contact */
+router.get('/:contactid', auths('ADMIN'), (req, res, next) => {
+    var cid = req.params.contactid;
 
+    Contact.findById(cid, (err, contact) => {
+        if (err) {
+            res.json({
+                status: false,
+                message: err.message
+            });
+        } else {
+            res.json({
+                status: true,
+                message: 'Success',
+                data: contact.toJSON({ virtuals: true })
+            });
+        }
+    });
+});
+
+/* POST contact */
+router.post('/:contactid', auths('ADMIN'), (req, res, next) => {
+    var cid = req.params.contactid;
+
+    Contact.findById(cid, (err, contact) => {
+        if (err) {
+            res.json({
+                status: false,
+                message: err.message
+            });
+        } else {
+            if (checkRequired(req, res, ['firstName']) && validatePhone.validate(req, res, ['mobile', 'landline'])) {
+                let firstName = req.body.firstName;
+                let lastName = req.body.lastName;
+                let mobile = req.body.mobile;
+                let landline = req.body.landline;
+
+                if (!(mobile && mobile.trim().length > 0) && !(landline && landline.trim().length > 0)) {
+                    res.json({
+                        status: false,
+                        message: 'Please specify a mobile and/or landline number',
+                        fields: ['mobile', 'landline']
+                    });
+                } else {
+                    contact.firstName = firstName;
+                    contact.lastName = lastName;
+                    contact.mobile = mobile;
+                    contact.landline = landline;
+
+                    contact.save((err) => {
+                        if (err) {
+                            res.json({
+                                status: false,
+                                message: err.message
+                            });
+                        } else {
+                            res.json({
+                                status: true,
+                                message: 'Successfully updated contact'
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    });
+});
+
+/* DELETE contact */
+router.delete('/:contactid', auths('ADMIN'), (req, res, next) => {
+    var cid = req.params.contactid;
+
+    Contact.findById(cid, (err, contact) => {
+        if (err) {
+            res.json({
+                status: false,
+                message: err.message
+            });
+        } else {
+            contact.remove((err) => {
+                if (err) {
+                    res.json({
+                        status: false,
+                        message: err.message
+                    });
+                } else {
+                    res.json({
+                        status: true,
+                        message: 'Successfully deleted contact'
+                    });
+                }
+            });
+        }
+    });
+});
 
 module.exports = router;
