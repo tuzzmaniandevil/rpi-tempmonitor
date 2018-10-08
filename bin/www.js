@@ -14,14 +14,19 @@ const mongoDbPassword = process.env.MONGO_DB_PASSWORD || 'example';
  * Module dependencies.
  */
 
-var db = require('./db');
+const db = require('./db');
 
-var appFunc = require('../app');
-var http = require('http');
-var tempSensors = require('./tempMonitor');
-var Settings = require('../schemas/settings');
-var TemperatureLog = require('../schemas/temperature');
-var notificationHandler = require('./notificationHandler');
+const GlobalEvents = require('./GlobalEvents');
+const globalEvents = GlobalEvents.get();
+const appFunc = require('../app');
+const http = require('http');
+const tempSensors = require('./tempMonitor');
+const Settings = require('../schemas/settings');
+const TemperatureLog = require('../schemas/temperature');
+
+/* Managers */
+const socketioManager = require('../managers/socketioManager');
+const temperatureManager = require('../managers/temperatureManager');
 
 var server, app, io, port;
 
@@ -125,48 +130,7 @@ db.connect({
     var temSensor = new tempSensors();
 
     temSensor.on('change', (id, temp) => {
-      console.log('Temp change', id, temp);
-
-      // Get Settings Object
-      Settings.getOrCreateSettings((err, settings) => {
-        if (err) {
-          console.error('Error starting temperature sensor', err);
-          process.exit(1)
-        } else {
-          // Get Sensor settings
-          var sensorSetting = settings.findSensorSetting(id);
-          if (sensorSetting && sensorSetting.enabled) {
-            // Log temperature into DB
-            TemperatureLog.create({
-              temperature: temp,
-              deviceId: id
-            }, (err, tempLog) => {
-              if (err) {
-                console.error('Error storing TemperatureLog', err);
-              } else {
-                // Send to notification handler
-                notificationHandler.handle(tempLog)
-                  .catch(err => {
-                    console.error('Error processing notification', err);
-                  });
-
-                // Emit change to websockets
-                io.sockets.emit('temperature', {
-                  id: id,
-                  name: sensorSetting.name || id,
-                  temperature: temp
-                });
-
-                io.sockets.emit('temperature_history', {
-                  data: [
-                    tempLog
-                  ]
-                });
-              }
-            });
-          }
-        }
-      });
+      globalEvents.emit('tempChange', id, temp);
     });
 
     temSensor
@@ -179,6 +143,12 @@ db.connect({
         console.error('Error starting temperature sensor', err);
         process.exit(1)
       });
+
+    /**
+     * Start Dependencies
+     */
+    socketioManager.start(io);
+    temperatureManager.start();
   }
 });
 

@@ -41,16 +41,22 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="list-group">
+                        <% alerts.forEach((alert) => {%>
                         <a href="#" class="list-group-item">
-                            <i class="fa fa-comment fa-fw"></i> New Comment
+                            <i class="fa fa-comment fa-fw"></i>
+                            Alarm: <%- alert.alarmType %><br/>
+                            Type: <%- alert.msgType %><br/>
+                            Status: <%- alert.getLatestStatus().status %><br/>
+                            To: <%- alert.toNumber %>
 
                             <span class="pull-right text-muted small">
-                                <em>4 minutes ago</em>
+                                <em><%- formatDateTime(alert.updatedAt) %></em>
                             </span>
                         </a>
+                        <%}); %>
                     </div>
                     <!-- /.list-group -->
-                    <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+                    <!-- <a href="#" class="btn btn-default btn-block">View All Alerts</a> -->
                 </div>
                 <!-- /.panel-body -->
             </div>
