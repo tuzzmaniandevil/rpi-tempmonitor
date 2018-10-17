@@ -21,8 +21,7 @@
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Mobile</th>
-                        <th>Landline</th>
+                        <th>Phone Number</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -37,10 +36,7 @@
                             <%- contact.lastName %>
                         </td>
                         <td>
-                            <%- contact.mobile %>
-                        </td>
-                        <td>
-                            <%- contact.landline %>
+                            <%- contact.phoneNumber %>
                         </td>
                         <td>
                             <div class="btn-group">
@@ -98,19 +94,12 @@
                         </div>
                     </div>
 
-                    <!-- <div class="form-group">
-                        <label for="add_email" class="col-sm-3 control-label">Email</label>
-                        <div class="col-sm-9">
-                            <input type="email" name="email" class="form-control" id="add_email" placeholder="Email address" />
-                        </div>
-                    </div> -->
-
                     <div class="form-group">
-                        <label for="add_mobile" class="col-sm-3 control-label">Mobile</label>
+                        <label for="add_phoneNumber" class="col-sm-3 control-label">Phone Number</label>
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <select name="mobile-region" class="btn btn-default">
+                                    <select name="phoneNumber-region" class="btn btn-default">
                                         <% supportedCountries.forEach(function(cc){ %>
                                         <option value="<%- cc.regionCode %>">
                                             <%= cc.regionCode %> (+<%- cc.countryCode %>)
@@ -118,25 +107,7 @@
                                         <% }); %>
                                     </select>
                                 </span>
-                                <input type="tel" name="mobile" class="form-control" id="add_mobile" placeholder="Mobile" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="add_landline" class="col-sm-3 control-label">Landline</label>
-                        <div class="col-sm-9">
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <select name="landline-region" class="btn btn-default">
-                                        <% supportedCountries.forEach(function(cc){ %>
-                                        <option value="<%- cc.regionCode %>">
-                                            <%= cc.regionCode %> (+<%- cc.countryCode %>)
-                                        </option>
-                                        <% }); %>
-                                    </select>
-                                </span>
-                                <input type="tel" name="landline" class="form-control" id="add_landline" placeholder="Landline" />
+                                <input type="tel" name="phoneNumber" class="form-control" id="add_phoneNumber" placeholder="Phone Number" />
                             </div>
                         </div>
                     </div>

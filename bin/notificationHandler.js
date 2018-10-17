@@ -140,7 +140,7 @@ function sendSms(log, settings, notificationSetting, sensorSetting, highAlarm) {
                     alarmType: (highAlarm ? 'HIGH' : 'LOW'),
                     msgType: 'SMS',
                     message: msg,
-                    toNumber: notificationSetting.contact.mobile
+                    toNumber: notificationSetting.contact.phoneNumber
                 }, (err, alert) => {
                     if (err) {
                         reject(err);
@@ -148,7 +148,7 @@ function sendSms(log, settings, notificationSetting, sensorSetting, highAlarm) {
                         alert.addStatus('Created');
                         // Send SMS :-)
                         clicksendManager.sendSms({
-                            to: notificationSetting.contact.mobile,
+                            to: notificationSetting.contact.phoneNumber,
                             body: msg
                         })
                             .then((resp => {
@@ -189,7 +189,7 @@ function sendVoice(log, settings, notificationSetting, sensorSetting, highAlarm)
                     alarmType: (highAlarm ? 'HIGH' : 'LOW'),
                     msgType: 'VOICE',
                     message: msg,
-                    toNumber: notificationSetting.contact.mobile
+                    toNumber: notificationSetting.contact.phoneNumber
                 }, (err, alert) => {
                     if (err) {
                         reject(err);
@@ -197,7 +197,7 @@ function sendVoice(log, settings, notificationSetting, sensorSetting, highAlarm)
                         alert.addStatus('Created');
 
                         clicksendManager.sendVoice({
-                            to: notificationSetting.contact.mobile,
+                            to: notificationSetting.contact.phoneNumber,
                             body: msg,
                             voice: 'female'
                         }).then((resp => {

@@ -53,20 +53,12 @@
                         modal.find('[name="firstName"]').val(d.firstName).change();
                         modal.find('[name="lastName"]').val(d.lastName).change();
 
-                        // Check mobile
-                        if (d.mobile && libphonenumber.isValidNumber(d.mobile)) {
-                            var parsedMobile = libphonenumber.parseNumber(d.mobile);
+                        // Check phoneNumber
+                        if (d.phoneNumber && libphonenumber.isValidNumber(d.phoneNumber)) {
+                            var parsedPhoneNumber = libphonenumber.parseNumber(d.phoneNumber);
 
-                            modal.find('[name="mobile"]').val(parsedMobile.phone).change();
-                            modal.find('[name="mobile-region"]').val(parsedMobile.country).change();
-                        }
-
-                        // Check landline
-                        if (d.landline && libphonenumber.isValidNumber(d.landline)) {
-                            var parsedLandline = libphonenumber.parseNumber(d.landline);
-
-                            modal.find('[name="landline"]').val(parsedLandline.phone).change();
-                            modal.find('[name="landline-region"]').val(parsedLandline.country).change();
+                            modal.find('[name="phoneNumber"]').val(parsedPhoneNumber.phone).change();
+                            modal.find('[name="phoneNumber-region"]').val(parsedPhoneNumber.country).change();
                         }
 
                         modal.modal('show');

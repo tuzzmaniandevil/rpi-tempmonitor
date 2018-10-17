@@ -18,13 +18,7 @@ const ContactSchema = new mongoose.Schema({
         required: false,
         trim: true
     },
-    mobile: {
-        type: String,
-        unique: true,
-        required: false,
-        trim: true
-    },
-    landline: {
+    phoneNumber: {
         type: String,
         unique: true,
         required: false,
