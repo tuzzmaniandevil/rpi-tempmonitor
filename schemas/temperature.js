@@ -13,7 +13,7 @@ const TemperatureLogSchema = new mongoose.Schema({
 }, {
         timestamps: true,
         capped: {
-            size: 536870912 // 512 MB
+            size: 268435456 // 256 MB
         }
     });
 
