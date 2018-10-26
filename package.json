@@ -29,7 +29,7 @@
     "google-libphonenumber": "3.1.15",
     "gpio": "0.2.10",
     "http-errors": "1.7.1",
-    "mongoose": "5.3.1",
+    "mongoose": "5.2.4",
     "morgan": "1.9.1",
     "passport": "0.4.0",
     "passport-local": "1.0.0",
