@@ -18,20 +18,21 @@ exports.connect = function (config, done) {
     url += ':' + config.port || '27017';
     url += '/' + config.dbName || '';
 
-    var dbConfig = { useNewUrlParser: true };
+    var dbConfig = {
+        useNewUrlParser: true,
+        auth: {}
+    };
 
     if (config.username) {
-        dbConfig.user = config.username;
+        dbConfig.auth.user = config.username;
     }
 
     if (config.password) {
-        dbConfig.pass = config.password;
+        dbConfig.auth.pass = config.password;
     }
 
     if (config.authdb) {
-        dbConfig.auth = {
-            authSource: config.authdb
-        };
+        dbConfig.authSource = config.authdb
     }
 
     mongoose.connect(url, dbConfig).then(
