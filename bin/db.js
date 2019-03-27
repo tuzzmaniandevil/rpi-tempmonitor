@@ -30,7 +30,7 @@ exports.connect = function (config, done) {
 
     if (config.authdb) {
         dbConfig.auth = {
-            authdb: config.authdb
+            authSource: config.authdb
         };
     }
 
