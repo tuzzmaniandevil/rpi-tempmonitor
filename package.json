@@ -1,6 +1,6 @@
 {
   "name": "rpi-tempmonitor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "start": "node ./bin/www.js"
@@ -20,22 +20,22 @@
     "ds18b20-gpio-mock": "1.0.0"
   },
   "dependencies": {
-    "bcrypt": "3.0.1",
-    "connect-mongo": "2.0.1",
-    "cookie-parser": "1.4.3",
-    "debug": "2.6.9",
-    "express": "4.16.3",
+    "bcrypt": "3.0.5",
+    "connect-mongo": "2.0.3",
+    "cookie-parser": "1.4.4",
+    "debug": "4.1.1",
+    "express": "4.16.4",
     "express-session": "1.15.6",
-    "google-libphonenumber": "3.1.15",
+    "google-libphonenumber": "3.2.2",
     "gpio": "0.2.10",
     "http-errors": "1.7.1",
-    "mongoose": "5.2.4",
+    "mongoose": "5.4.20",
     "morgan": "1.9.1",
     "passport": "0.4.0",
     "passport-local": "1.0.0",
-    "socket.io": "2.1.1",
-    "w1temp": "4.4.0",
-    "handlebars": "4.0.12",
+    "socket.io": "2.2.0",
+    "w1temp": "4.4.1",
+    "handlebars": "4.1.1",
     "ejs": "2.6.1",
     "clicksend": "3.1.0"
   }
