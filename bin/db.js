@@ -28,7 +28,7 @@ exports.connect = function (config, done) {
     }
 
     if (config.password) {
-        dbConfig.auth.pass = config.password;
+        dbConfig.auth.password = config.password;
     }
 
     if (config.authdb) {
